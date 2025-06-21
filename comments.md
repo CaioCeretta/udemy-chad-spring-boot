@@ -1,100 +1,67 @@
+
+## What is Spring Boot? 
+
+### First of all, what is Spring?
+
+Spring is a framework for the Java language, often used to develop web applications, REST APIs, corporate systems, etc
+
+It provides multiple tools, like:
+
+. Dependency Injection (to control objects other classes use)
+. HTTP Requests Control (GET, POST, etc)
+. DB Access (with JPA/Hibernate)
+. Security (Authentication, Authorization)
+
+But: it requires multiple manual configuration. It´s powerful, but it is verbose and with a high learning curve.
+
+
+### Spring in a Nutshell
+
+. Very popular framework for building Java applications
+. Provides a large number of helper classes and annotations
+
+
+### The Problem
+
+. Building a traditional Spring application is really hard
+  The issue is that some questions arise
+    Q: Which JAR dependencies i need?
+    Q: How do i set up configuration (xml or Java)? 
+    Q: How do i install the server? (Tomcat, JBoss, etc...)
+
+### Spring Boot Solution
+
+Spring boot is a Springs's sub project created to easy Spring apps creation.
+
+. Spring Boot make it easier to get started with Spring development
+. Minimize the amount of manual configuration
+  . Perform auto-configuration based on props files and JAR classpath
+. Help to resolve dependency conflicts (Maven or Gradle)
+. Provide an embedded HTTP server so we can get started quickly
+  . Tomcat, Jelly, Undertow, ...
+
+
 ## Initializing a Spring project
 
-First of all, we enter the website "start.spring.io", in this website there are going to be some options.
+Spring Boot provides us the Spring Initializr, which is a site used to quickly create a starter Spring project.
 
-### 1st Part 
+Where we select the options and dependencies, it will create a Maven/Gradle project for us which we can download and import
+it inside our IDE, such as Eclipse, Intellij, Netbeans, etc., or we can simply use a plain text editor and use maven in
+the command line and we are good to go.
 
-1. Project
+### Spring Boot Embedded Server
 
-Which type of project are we creating, by default gradle - groovy is selected but the instructor prefers to use maven because
-it's the native approach. Gradle uses maven under the hood, it's a more simplified way than gradle but maven is easier
-to learn and most of the companies utilize maven.
+. Spring Boot provides an embedded http server so we can get started quickly
+. No need to install server separately, it would be something ass
 
-Maven: 
-. Based in XML
-. Default, stable and very used in java projects
-. Easier for  beginners to understand
-. More rigid structure
+mycode  <- JAR file, includes the application code and the server.
+tomcat    
 
-Gradle:
-. Based on Kotlin DSL or Groovy DSL
-. More modern and flexible
-. Faster with incremental build resource
-. Recommended for bigger and complex projects
-
-2. Language
-
-`Java`, `Kotlin`, and `Groovy` are languages based on JVM, but for this course purpose w
-
-Java is more used, verbose but well documented, bigger community and support and ideal for whom is starting
-
-Kotlin is more modern and concise, but can also work with Java, created by Jetbrains, have some newer resources such as
-null safety and coroutines (Way to write asynchronous, non-blocking code in a sequential style. They allow suspending and
-resuming functions without blocking threads.). And is very used in spring boot + reactive APIs
-
-Groovy is dynamic and more flexible than java, less used nowadays in new projects, internally used in Spring within scripts
-and tests, but not too recommended for newer apps.
-
-3. Spring Boot Version
-
-Newer version with (Snapshot) on their name, means that they are versions released for testing (newer features, but they
-are still not official)
-
-4. Project Metadata
-
-. Group: Domain of the company (reversed, example.com we use com.example)
-. Artifact: Name of the project (projetosapi)
-. Name: Same as the artifact, we can use uppercase if we would like, etc, just for display
-. Description
-. Package Name: root package, its value is also auto generated: group  + artifact
-. Package: Jar
-
-  Jar (Java Archive) is more common with spring boot, is an executable file that contains our java application and all its 
-  dependencies. It's used for standalone apps (auto-executables), spring boot was projected to use JAR as default, it runs
-  with a simple java -jar my-app.jar
-
-  WAR (Web Application Archive) - More common in old projects, it's a packaging used in servlets Java and in applications
-  servers, such as Tomcat, Wildfly or Jboss.
-  It needs to be deployed in a server, Ex: Tomcat -> /webapps/my-app.war
-  Requires more configuration and its less portable
-
-### 2nd Part
-
-If we were to run with only with this first part, we could, but before this we are going to add the dependencies.
-
-Dependencies are the libraries we want to add, when clicking on `Add` dependencies, we are going to see some options.
-
-In our case we'll choose
-
-Lombok: A Java annotation library that helps reduce boilerplate code by automatically generating commonly used code, such
-as getters, setters, constructors, and toString methods at compile time.
-
-Spring Boot Devtools: A toolset that provides fast application restarts, live reload, and various configurations to improve
-the development experience. With Devtools enabled, the application will automatically restart whenever changes are made
-to the code, making the development process faster and more efficient.
-
-Spring Web: A module that enables building web applications using Spring MVC (Model-View-Controller). It provides essential
-features for building RESTful services and web-based applications, including request handling, URL mapping, and view resolution.
-
-Spring Data JPA: Spring Data JPA is a part of the Spring Data project that simplifies data access using the Java Persistence
-API (JPA). It reduces boilerplate code by providing repository interfaces that automatically handle common database operations
-like saving, updating, deleting, and querying entities. With Spring Data JPA, developers can focus more on the domain logic
-while relying on conventions and annotations to generate queries, making data persistence faster and easier to implement.
-
-H2 Database: An in-memory database that supports both JDBC and R2DBC. When the application starts, the H2 database is
-automatically launched in memory, and it is discarded once the application stops. It is often used for testing, development,
-or scenarios where persistent data storage is not necessary. Since it is in-memory, it offers fast data operations but does
-not retain data after the application is restarted.
-
-Before generating we have two buttons to click on
-
-Generate: 
-
-Explore: We can visualize how the project is going to be created, the source code, the package, application properties,
-pom.xml, etc.
+this means that tomcat (the embedded server) will be part of our JAR file. And the nice thing about this approach is that
+it is a self contained unit, we don't have to install anything else, the application server is part of our code.
 
 
-## Arquivo de configuração de dependencias
+## Similarities to package.json
 
 Similar to package.json from node projects, the main differences/similarities are: 
 
@@ -113,4 +80,46 @@ Similar to package.json from node projects, the main differences/similarities ar
 | **Typical Use Case**       | Enterprise back-end apps (Spring Boot), Android apps       | Front-end (React, Vue), Node.js APIs, full-stack JS apps  |
 
 
+## Running Spring Boot Apps
+
+. Spring Boot apps can be run standalone (includes embedded server)
+. Run the Spring Boot app from the IDE or command-line
+
+Therefore, in the example above, we would run in the command line: `java -jar mycoolapp.jar` 
+
+## Deploying Spring Boot Apps
+
+. Spring Boot can also be deployed in the traditional way 
+. You can deploy a WAR file to an external server such as Tomcat, JBo, WebSphere, etc, and it it will work just like it 
+it did in the past
+
+  Let's consider an example: 
+  Suppose we have a Tomcat server running in some corporate server. We can simply take our Spring Boot application, package
+  its WAR file and deploy it inside that Tomcat server.
+  In this case, since we're deploying the app in the traditional way, we don't need an embedded server — it's already
+  provided by Tomcat. Also, our WAR file will typically include our application code as the server itself will handle the
+  rest of the run environment.
+
+  This Tomcat server can also host other WAR applications from other teams. The spring boot would run normally alongside
+  the other traditional java apps
+
+## Common Questions - Lesson 1
+
+1. Does Spring Boot replace Spring MVC, Spring REST, etc...? 
+
+. No, instead, Spring Boot actually uses those technologies in the background, such as Spring MVC, Spring REST, Spring Core,
+etc. Spring boot can use all those technologies in the background, there's no competition, nor replacement. Spring Boot
+is mainly about configuration, once we do our spring boot config, we can make use of regular Spring coding. It simply
+helps us to start quickly with minimal configuration.
+
+2. Does Spring Boot run code faster than regular Spring code? 
+
+. No. Behind the scenes, Spring Boot uses same code of Spring Framework.
+. Remember, Spring Boot is about making it easier to get started, minimizing configuration, etc.
+
+3. Do we need special IDE for Spring Boot? 
+
+. No. We can use any IDE for Spring Boot apps... even use plain text editor.
+. The Spring team provides free Spring Tool Suite (STS) and a collection of IDE plugins
+. Some IDEs provide fancy Spring tooling support, but it's not a requirement.
 
