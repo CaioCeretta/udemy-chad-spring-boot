@@ -318,7 +318,8 @@ What are Spring "Projects"?
 
 These are some projects that we can use on our application development IF NEEDED. But. then again, these are all optional.
 
-
+To get information about these projects we simply go to `www.spring.io` website, search projects, and see if any project
+available online can be useful to us.
 
 
 
