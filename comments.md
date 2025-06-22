@@ -1,5 +1,5 @@
 
-## What is Spring Boot? 
+Lesson 1 -  Spring boot overview
 
 ### First of all, what is Spring?
 
@@ -41,7 +41,7 @@ Spring boot is a Springs's sub project created to easy Spring apps creation.
   . Tomcat, Jelly, Undertow, ...
 
 
-## Initializing a Spring project
+### Initializing a Spring project
 
 Spring Boot provides us the Spring Initializr, which is a site used to quickly create a starter Spring project.
 
@@ -61,7 +61,7 @@ this means that tomcat (the embedded server) will be part of our JAR file. And t
 it is a self contained unit, we don't have to install anything else, the application server is part of our code.
 
 
-## Similarities to package.json
+### Similarities to package.json
 
 Similar to package.json from node projects, the main differences/similarities are: 
 
@@ -80,14 +80,14 @@ Similar to package.json from node projects, the main differences/similarities ar
 | **Typical Use Case**       | Enterprise back-end apps (Spring Boot), Android apps       | Front-end (React, Vue), Node.js APIs, full-stack JS apps  |
 
 
-## Running Spring Boot Apps
+### Running Spring Boot Apps
 
 . Spring Boot apps can be run standalone (includes embedded server)
 . Run the Spring Boot app from the IDE or command-line
 
 Therefore, in the example above, we would run in the command line: `java -jar mycoolapp.jar` 
 
-## Deploying Spring Boot Apps
+### Deploying Spring Boot Apps
 
 . Spring Boot can also be deployed in the traditional way 
 . You can deploy a WAR file to an external server such as Tomcat, JBo, WebSphere, etc, and it it will work just like it 
@@ -103,7 +103,7 @@ it did in the past
   This Tomcat server can also host other WAR applications from other teams. The spring boot would run normally alongside
   the other traditional java apps
 
-## Common Questions - Lesson 1
+### Common Questions - Lesson 1
 
 1. Does Spring Boot replace Spring MVC, Spring REST, etc...? 
 
@@ -122,4 +122,203 @@ helps us to start quickly with minimal configuration.
 . No. We can use any IDE for Spring Boot apps... even use plain text editor.
 . The Spring team provides free Spring Tool Suite (STS) and a collection of IDE plugins
 . Some IDEs provide fancy Spring tooling support, but it's not a requirement.
+
+## Lesson 2 - Initializr
+
+### Spring Initializr
+
+. Quickly create a set Spring project
+. Select your dependencies
+. Creates a Maven/Gradle project, which we can download after generated.
+. Import the project into our IDE
+  . Eclipse, IntelliJ, Netbeans, etc..
+
+### Quick Word on Maven
+
+. When building our Java project, we may need additional JAR files
+  . For example: Spring, Hibernate, Commons Logging, JSON, etc...
+. One approach is to download the JAR files from each project website and manually add them to our build path
+
+e.g. / classpath
+
+. We simply tell `Maven` the projects we are working with (dependencies), such as Spring, Hibernate, etc.
+. Maven will go out and download the JAR files for those projects for us.
+. And maven will make those JAR available during compile / run
+. We can think of Maven as our friendly helper/personal shopper, for example, we tell "Maven i need the dependencies
+A, B, C and D" and maven will go out, grab those JAR files, add them to our class path and make them available during
+compile and run.
+
+### Development Process
+
+1. Configure our project at Spring Initializr website: `http://start.spring.io`
+2. Download the zip file
+3. Unzip the file
+4. Import the project into our IDE
+
+.Group Id: Namespace used to identify who is creating the project, generally based on the org domain reversed, like
+com.example
+.Artifact: Project name
+
+after setting these two, the package name will be `group.artifact`
+
+### Most common dependencies
+
+Spring Web: For creating REST APIs, MVC, etc. Includes controllers support, embedded tomcat, etc.
+
+Database access: 
+
+Spring Data JPA: Facilitate relation db integration using JPA and Hibernate
+JDBC API: direct access via JDBC, in case we want manual queries
+H2 Database: In-memory database (used for local tests)
+PostgreSQL Driver or MySQL Driver: Database driver
+
+Security and Authentication:
+
+Spring Security: Adds authentication / authorization (login, roles, etc)
+
+Tests:
+
+Spring Boot Test: Included by default in many cases. It supports JUnit, Mockito, etc.
+
+Tests Validation: 
+
+Validation (JSR-380)
+
+API Documentation
+
+Springdoc OpenAPI or Swagger UI: Generates API rest interactive documentation.
+
+E-mail Sending
+
+Spring Boot Starter Mail: Sending e-mails with SMTP (ex: Gmail, Mailgun, etc.)
+
+Useful Extras: 
+
+Lombok: Avoids code repetition (getters, setters, @Builder, etc.)
+Sprint Boot DevTools: automated refreshes, helps in local development
+Actuator: Provides endpoints for app monitoring (/actuator/health, etc.)
+
+***
+
+#### Common combination for a REST API with database: 
+
+. Spring Web
+. Spring Data JPA
+. PostgreSQL Driver
+. Validation
+. Lombok
+. Spring Boot DevTools
+
+***
+
+However, for this first project, the instructor only added the web dependency for now.
+
+### Application file
+
+The main Java application file — typically named ArtifactNameApplication.java — is annotated with @SpringBootApplication.
+Inside its main method, the application is bootstrapped using SpringApplication.run(ClassName.class). For testing purposes, 
+we can simply right-click this file and run it as a Java application. There's no need for an external server, as Spring
+Boot comes with an embedded server built-in.
+ 
+## Lesson 3 - REST Controller
+
+For initializing a Rest controller, we simply say the @RestController in a controller file .java
+
+Now, we simply `expose` the / path and it returns hello world with
+
+@GetMapping("/") <- Handle HTTP Get Requests
+public String sayHello() { 
+/* In Java, including Spring Boot, at this part public -> means the method is public | String -> the method returns a
+string | sayHello() <- Module name *\
+
+return "Hello World"
+
+}
+
+## Packages
+
+### What are packages? 
+
+In Java (and Spring Boot is a Java framework), a package is like a namespace that groups related classes together. It's
+a logical structure used to organize our code.
+
+#### Are packages similar to folders? 
+
+Yes — but with a key difference
+
+. A Java package (like com.example.project.service ) corresponds to a folder structure in our system, like `/com/example/project/service'
+. So yes, they behave like folders on disk, but they also define a "scope" for classes in Java (accessibility, imports, etc).
+
+Example: 
+
+If we have this Java class: 
+
+```java
+
+  package com.example.demo.controller; 
+
+  public class UserController {
+    // Code here
+  }
+
+```
+
+it must be saved in a file path like:
+
+`src/main/java/com/example/demo/controller/UserController.java`
+
+Otherwise, the project won't compile
+
+#### Why are packages useful in Spring Boot? 
+
+. They organize code into features or layers (like `controller`, `service`, `repository`, etc.)
+. Spring Boot uses component scanning, which automatically finds beans/components inside our package (and subpackages).
+  . So placing our classes inside the right package structure matters! 
+
+#### Typical package structure in a Spring Boot project
+
+com.example.demo
+  ├── controller     // for @RestController and @Controller classes
+  ├── service        // for business logic (@Service)
+  ├── repository     // for database access (@Repository)
+  ├── model          // for data classes (like @Entity, DTOs)
+  └── config         // for @Configuration and security beans
+
+
+In Summary
+
+Concept	   Description
+Package	   A logical namespace for organizing Java classes
+Folder	   The physical directory that matches the package
+Are they   similar?	Yes — each package maps to a corresponding folder
+
+
+#### End packages explanation
+
+To create a new package, simply double click the folder -> new package -> append to the path the name of the package we
+want.
+
+for a simple hello world example. inside the project package, we created another package named rest, inside a FunRestController
+and used @RestController (To inform java this is a rest file and should respond to requests), and inside the controller
+scope, we added a @GetMapping("/") and the method, GetMapping is used to expose that path
+
+## Lesson 4 - Spring Projects
+
+What are Spring "Projects"? 
+
+. Additional Spring modules build-on top of the code Spring Framework
+. Only use what you need...
+
+  . Spring Could: For cloud development, Spring Data: For database integrations
+
+  . Spring Batch: for batch processes, Spring Security: For securing our application
+  . Spring Web Services: to create RESTful web services and SOAP.
+  . Spring LDAP: Accessing LDAP Services
+  . others...
+
+These are some projects that we can use on our application development IF NEEDED. But. then again, these are all optional.
+
+
+
+
 
