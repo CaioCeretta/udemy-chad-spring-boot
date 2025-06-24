@@ -513,3 +513,219 @@ my-super-cool-app/
     . Standard Directory Structure
 
     . Learning maven allow us to run a project with minimal local configuration
+
+## Lesson 6 - Maven key concepts
+
+. POM File - pom.xml
+
+  . Project Object Model file
+  . Configuration file for out project
+    . Basically our "shopping list" for Maven
+  . Located in root of our Maven project
+
+  - Structure
+
+  . project metadata: information about our project — Project name, version, etc. Output file type: JAR, WAR,  ...
+  . dependencies: list of projects that we depend on in order to run
+  . plug ins: additional custom tasks to run: generate JUnit test reports, and so on.
+
+  - Simple POM File
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+      <modelVersion>4.0.0</modelVersion>
+      <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+      </parent>
+      <name>mycoolapp</name>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <build>
+          <plugins>
+            <plugin>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+          </plugins>
+        </build>
+
+    </project>
+
+
+  ### Project Coordinates
+
+  . Project Coordinates Uniquely identify a project
+    . Similar to GPS coordinates for our house: latitude / longitude
+    . Precise information for finding our house (city, streets, house #)
+
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.3</version>
+
+  In a house address it would be like groupId is the city, the artifactId the street, and the version is the house number
+
+  ### Project Coordinates - Elements
+
+  Group Id: Company name, group or organization. Convention is to use reverse domain name com.luv2code (convention used
+  for java package names)
+
+  Artifact Id: Name for this project, the ID of the artifact
+
+  Version: A specific release version like: 1.0, 1.6, 2.0
+  If project is under active development then: 1.0-SNAPSHOT
+
+  ### Example for project coordinates
+
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>6.0.0</version>
+
+    or
+
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>6.1.4.Final</version>
+
+  
+  ### Adding Dependencies
+
+    If we want to add some support for Spring and Hibernate,
+
+    <project ...>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring.context</artifactId>
+          <version>6.0.0</version>
+        </dependency>
+        <dependency>
+          <groupId>org.hibernate.orm</groupId>
+          <artifactId>hibernate-core</artifactId>
+          <version>6.1.4.Final</version>
+        </dependency>
+      </dependencies>
+    </project>
+  
+    Here we have references for the projects, a lot like the projects description from our pom.xml
+
+  ### Dependency Coordinates
+
+    . To add given dependency project, we need
+
+      . Group ID, Artifact ID  
+      . Version is optional
+        . Best practice is to include the version (repeatable builds) — best practice for DevOps, we should be able to 
+        say: "Hey, our project works with version x.y.z of a given project, this way we know that that part has been
+        tested, verified, and work"
+
+      . May see this referred to as GAV: Group Id, Artifact Id, Version
+
+  ### How to find dependency coordinates
+
+    Option 1: Visit the project page (sprig.io, hibernate.org, etc) — they will give the details that we'll need to add
+    their project using maven
+
+    Option 2: Visit `https://central,sonatype.com/` (easiest approach) — go to the maven central repository and search for
+    the projects and also get those details
+
+  ## Lesson 7 - Exploring Spring Boot Project Files - Part One
+
+  ### Spring Initializr
+
+  . Creates a Maven project for us 
+  . Let's cover everything it created
+
+  Spring Boot uses the main Java standard directory structure
+
+  src/main/java - Where we place our Java source code
+  src/main/resource - Default directory for resource files the application will use in execution time, such as .properties
+  (ex: application.properties), .yml files, XML configuration files, static files, like templates, images or text files,
+  .sql for database initialization, etc.
+  src/test/java - unit testing source code
+
+  ### Maven Wrapper Files
+
+  mvnw and mvnw.cmd: Maven wrapper files, the mvnw allows us to run a project with no need to have Maven installed or
+  present on our path, if the correct version of Maven is NOT found on our computer it automatically downloads correct
+  version from internet and runs Maven
+
+  Two files are provided
+  
+  . mvnw.cmd for MS windows <- mvnw clean compile test
+  . mvnw.sh for Linux / Mac <- ./mvnw clean compile test
+
+  That is the basic idea of these wrapper files, they will automatically download and run the correct Maven version for
+  us
+  Therefore, if we already have Maven installed previously, then we don't need the mvnw files, can even safely delete
+  them, just use it as we would normally use, using commands like `mvn clean compile test`.
+
+  ### Maven POM file
+
+  The pom.xml includes info that we entered at Spring Initializr website, such as the groupId, artifactId and so on — that
+  information is automatically in our generated pom file.
+
+  We also have a collection of maven dependencies in the file too. We can notice that they are called starters, like: 
+  `<groupId>org.springframework.boo</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>`
+
+  These are spring boot starters, is just a collection of maven dependencies and these are the compatible version for
+  these dependencies — the boot-starter-web is a collection of dependencies (spring-web, spring-webmvc, hibernate-validator
+  tomcat, json, ...).
+  
+  Therefore, what this does is that it saves the developer from having to list all the individual
+  dependencies and also makes sure we use compatible versions.
+
+  #### Spring Boot Maven Plugin
+
+  In the POM file there's also a section for Spring Boot Maven plugin, so we'll actually see it in the bottom of the POM
+  file.
+
+  `<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+  </plugin>`
+
+  Here, this plugin is used to package an executable JAR file that we can run in the command file or to create a .war archive
+  file. We can also use this plugin to easily run the application with
+
+  `./mvnw package
+   ./mvnw spring-boot:run`
+
+  And this will run the application, and as we saw, if we already have Maven installed in our computer we don't need the
+  ./mvnw stuff , but only mvn package. It's up to us.
+
+  ### Java Source Code
+
+  When we generate our actual project we have the main spring boot application class, created by the initializr, as, for
+  example MycoolappApplication.java. When we created our rest controller test, inside the java app folder, we created a
+  rest package and a controller inside, where we used this controller to expose a very simple API. 
+
+  
+  
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+    
+
+
