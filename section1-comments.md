@@ -707,8 +707,92 @@ my-super-cool-app/
   example MycoolappApplication.java. When we created our rest controller test, inside the java app folder, we created a
   rest package and a controller inside, where we used this controller to expose a very simple API. 
 
-  
-  
+  ## Lesson 8 - Exploring Spring Boot Project Files - Part Two
+
+  ### Application Properties
+
+  . By default, Spring Boot will load properties from: application.properties, which is created by default by the Spring
+  Initializr, it starts empty, but it usually consist of application properties such as: 
+
+  . server.port=8585: This changes the default behavior of starting the server on 8080, but to listen to different ports
+  . coach.name=John Doe  
+  . coach.team=random name -- Which are custom properties and we can give as many properties as we would like. ---
+
+  ### Read data from: application.properties
+
+  We know application properties is under src/resources/ folder and we can read data from it making use of `injections`.
+
+  Let's use the FunRestController we created, in the class scope we use, for example
+
+  @Value("${coach.name}")
+  private String coachName;
+
+  We are now injecting this coach.name from our application.properties and assigning it to the attribute coachName, then
+  for the order property we would simply
+
+  @Value("${coach.team}")
+
+  private String coachTeam;
+
+  ### Static Content
+
+  By default, Sprint Boo twill load static resources from the /static directory (such as html files, css, js, images, etc).
+
+  We simply place them in the static directory and Spring Boot will load it automatically in the application.
+
+  ### WARNING WE NEED TO BE AWARE OF
+
+  Do not use src/main/webapp directory if our application is packaged as a JAR.
+
+  Although this is a standard Maven directory, it works only with WAR packaging.
+
+  It is silently ignored by most build tools if we generate a JAR
+
+  ### Templates
+
+  . Spring Boot includes auto-configuration for following template engines
+
+  . FreeMarker, Thymeleaf, Mustache
+
+  By default, Spring Boot will load templates from "/templates" directory, inside the resources directory.
+
+  ### Unit Tests
+
+  Spring Initializr already creates one, in our src directory, it will create a test/ directory inside src/, it will
+  include a file named, for example, `MycoolappApplicationTests.java`. Initially this file is very basic, there is no
+  real code, we add our own custom tests in this file. 
+
+## Lesson 9 - Spring Boot Starters
+
+### The Problem
+
+Building a Spring application is really hard
+
+. FAQ: Which maven dependencies do i need? 
+
+### WHy is it so Hard?
+
+. It would be great if there was a simple list of Maven dependencies.
+. Collected as a group of dependencies... as a one-stop-shop
+. So i don't have to search for each dependency and see what is available
+
+¨There should be an easier solution¨ 
+
+### Solution - Spring Boot Starters
+
+. A curated list of Maven dependencies
+. A collection of dependencies grouped together
+. Tested and verified by the Spring Development team
+. Makes it much easier for the developer to get started with Spring
+. Reduces the amount of Maven configuration
+
+### Spring MVC
+
+. For example, when building a Spring MVC app, you normally need
+
+    
+
+
 
 
 
