@@ -856,11 +856,88 @@ how:
 . Click on View > Tool Windows > Maven Projects > Dependencies
 . Expand whichever starter we want.
 
+## Lesson 10 - Spring Boot Starter Parent
+
+spring-boot-starter-parent is a parent POM provided by Spring Boot. He is included in our maven project to inherit a series
+of useful default configurations, preventing us from needing to write all of it manually
+
+### What he does for us?
+
+  By using this parent, Maven automatically applies multiple configurations and good practices defined by the Spring BOot
+  team
+
+  1. It manages the dependency versions
+
+    . It already defines the correct and compatible version of hundreds of libraries that Spring Boot uses
+    . This means that we don't need to specify the version of most dependencies in our pom xml's <dependency> 
+
+    Example
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <!-- Doesn't need to specify the version, only in the parent, which ensures that every dependency share the same
+      version as the parent, making sure that they are all compatible -->
+    </dependency>
+
+  2. Defines the Maven default configuration
+
+    For example: 
+
+      . Java compiler version (by default, Java 17 or other one according to Spring Boot's version), however, if we would
+      like to change the default, we simply add a new tag <properties> and set <java.version> to whatever version we want
+      . File encoding: UTF-8
+      . JAR packaging configurations
+      . Maven plugins already configured: maven-compiler-plugin, maven-surefire-plugin, etc
+
+  3. It easies good practice inheritance
+
+    We inherit stable and tested configuration from the Spring boot team. This reduce errors and ensures compatibility.
+
+  4. Typical pom.xml structure
+
+    ```xml
+      <parent>
+        <groupId>org.spring.framework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.0-RC1</version>
+        <relativePath /> <!-- Lookup parent from repository>
+    ```
+
+  However, we must pay attention, the parent is not required, but it is highly recommended for projects that uses Spring
+  Boot with Maven.
+
+  Also, the starter parent provides the default configuration of spring boot plugin, such as
+
+  ```xml
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+  ```
+
+  it references the spring boot maven plugin it is ready to go, there is no additional configuration needed, simply run
+
+  `> mvn spring-boot:run`
+
+  ### Benefits of the Spring Boot Starter Parent
+
+  . Default Maven configuration: Java version, UTF-encoding, etc
+  . Dependency Management
+    . Use version on parent only
+  . spring-boot-starter-* dependencies inherit version from parent
+  . Default configuration of Spring Boot plugin
 
 
 
 
-    
+
+
+
 
 
 
