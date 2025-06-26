@@ -786,9 +786,79 @@ Building a Spring application is really hard
 . Makes it much easier for the developer to get started with Spring
 . Reduces the amount of Maven configuration
 
+
 ### Spring MVC
 
-. For example, when building a Spring MVC app, you normally need
+. For example, when building a Spring MVC app, you normally need to add the springframework, hibernate-validator, thymeleaf
+on our Maven dependencies. So, a lot of stuff we need to do individually, as for as listing out the dependencies.
+
+### Solution: Spring Boot Started - Web
+
+. Spring Boot provides: spring-boot-starter-web
+
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+. By simply adding this single entry into our maven file, it is a spring boot starter, which is a collection of maven
+dependencies with compatible versions
+. This starter dependency contains: spring-web, spring-webmvc, hibernate-validator, json, tomcat, etc. A lot of stuff
+"for the price of one"
+. Saves the developer from having to list all of the individual dependencies, also makes you have compatible version
+
+### Spring Initializr
+
+. In spring initializr simply selected *Web* dependency
+. We automatically get `spring-boot-starter-web` in `pom.mxl`
+. Once we select `Spring Web`  on the list, we can notice that this web starter, will give support to Tomcat and Spring MVC.
+
+
+#### Example: We are building a Spring App that needs Web and Security
+
+. Simply select the dependencies in the Spring Initializr, such as:
+  - Spring Web, Spring Security, Spring Data JPA, Thymeleaf
+
+. When generating, it will add the appropriate Spring Boot starters to our pom.xml
+
+#### End
+
+There are more than 30 Spring Boot Starters from the Spring Development Team, such as
+
+. spring-boot-starter-web: Building web apps, includes validation, REST, uses Tomcat as default embedded server
+. spring-boot-starter-security: Adding Spring Security support
+. spring-boot-starter-data-jpa: Spring database support with JPA and Hibernate
+. ...
+
+For a full list of spring boot starters, we can go to `www.luv2code.com/spring-boot-starters` that will redirect to the
+Spring documentation that will list all the spring boot starters.
+
+### What is a Starter? 
+
+. FAQ: What is spring-boot-starter-xyz?
+
+. 1st Approach
+To know what is inside of it, we must first check its `pom.xml`, but it normally references other starters, so we have
+to dig a bit and is quite cumbersome to work through it.
+
+. 2nd Approach
+Make use of the IDE (Most IDEs have a Dependency Management / View feature), and this is much easier to navigate, here's
+how: 
+
+1. For Eclipse Users
+
+. Open pom.xml
+. Select the tab "dependency hierarchy" at the bottom
+. Expand the desired starter and we can see everything it includes
+
+2. For IntelliJ Users
+
+. Click on View > Tool Windows > Maven Projects > Dependencies
+. Expand whichever starter we want.
+
+
+
+
 
     
 
