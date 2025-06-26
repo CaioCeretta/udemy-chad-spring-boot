@@ -920,9 +920,35 @@ of useful default configurations, preventing us from needing to write all of it 
 	</build>
   ```
 
-  it references the spring boot maven plugin it is ready to go, there is no additional configuration needed, simply run
+  ### How does build plugin relates to the parent and how to execute
+
+  The <parent> block inherits configuration from `spring.boot.starter-parent`, including
+
+  . Default plugin versions
+  . Common plugin configurations
+
+  This means we don't need to manually configure version numbers for plugins like
+
+  ```xml
+  <plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+  </plugin>
+  ```
+
+  `spring-boot-starter-parent` contains a section called <pluginManagement>. Inside of it, it registers the plugin
+  `spring-boot-maven-plugin` (and others)
+  . When our project inherits this `parent, everything inside <pluginManagement> can be used with no explicit version
+  in our plugin
+
+  In our pom.xml, the build groupId and the artifactId are the same as the one in <pluginManagement>, and Maven identifies
+  this correspondence by these two attributes, they are the "key" that links the plugins defined in the parent with the 
+  ones used in the project.
+
+  Therefore, there is no need to additional configuration, Maven does everything for us, we just need to run
 
   `> mvn spring-boot:run`
+
 
   ### Benefits of the Spring Boot Starter Parent
 
@@ -931,7 +957,6 @@ of useful default configurations, preventing us from needing to write all of it 
     . Use version on parent only
   . spring-boot-starter-* dependencies inherit version from parent
   . Default configuration of Spring Boot plugin
-
 
 
 
