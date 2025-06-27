@@ -1005,6 +1005,46 @@ Once we made these two setups, then IntelliJ Community Edition will be able to w
 4. Verify the app is automatically reloaded.
 
 
+## Lesson 12 - Dev Tools - Coding
+
+. Creating folder to hold all section 1 projects
+. Moving mycoolapp to this folder and renaming it to 01-spring-boot-demo
+. Copying mycoolapp and renaming the copy to 02-dev-tools-demo
+. Open folder in IntelliJ
+. Go to settings -> build, execution, deployment -> compiler tab -> check "build project automatically"
+. Go to settings -> advanced settings -> check "allow auto-make to start..."
+. Open pom.xml and add spring-boot-devtools dependency
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+
+  ### Why is dev tools groupId the same as the parent one? 
+
+  . The groupId is the same as the parent one, meaning that both are part of the same project maintained by Spring Boot
+  they are not directly connected by inheritance in pom.xml.
+
+  .Parent is inheriting configuration from the spring=boot-starter-parent, which is a SPring Boot pom, when adding this
+  dependency we are simply saying to add this dependency to that specific group.
+  
+  . The relation between them is: 
+    . Both belong to the same Spring Boot project, with the same groupId, that's why they seem related
+    . The parent (starter-parent) centralizes and define default Spring-Boot versions
+    . This means we don't need to define a version
+
+  In Conclusion
+
+  . Yes, the dependency groupId is "conceptually related" to the parent, because they come from the same eco-system
+  . But, in terms of XML structure, the groupId of a dependency isn't directly inherited by the parent — what the parent
+  does is simply providing versions, configurations and default plugins
+
+  ### End
+
+  . Open the controller and a new REST endpoint and test it out
+
+
+
 
 
 
