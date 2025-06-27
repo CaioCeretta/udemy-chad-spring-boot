@@ -1044,6 +1044,114 @@ Once we made these two setups, then IntelliJ Community Edition will be able to w
   . Open the controller and a new REST endpoint and test it out
 
 
+## Lesson 13: Spring Boot Actuator
+
+<!-- There is no actuator for spring-boot-starter-parent 3.5.3 -->
+
+Problem
+
+. How can i monitor and manage my application? 
+. How can i check the application health? 
+. How can i access application metrics
+
+### Solution: Spring Boot Actuator
+
+  ##### What is it? 
+
+  . Exposes endpoints to monitor and manage our application
+  . We easily get DevOps functionality out of the box (works automatically with no additional configuration)
+  . Simply add the dependency to our POM file
+  . REST endpoints are automatically added to our application
+
+
+  ####  Actuator Dependency 
+  . We simply add new dependency to our POM file
+
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+  </dependency>
+
+  . This will enable  spring boot actuator and give support for these metrics and monitoring of the app
+  
+  #### Actuator Endpoints 
+  
+    All the endpoints metrics are exposed with the prefix /actuator, and they are: 
+
+    . /health: checks the status of our application
+      . By default, only /health is exposed, 
+      . Normally used by monitoring apps to see if our app is up or down
+      . localhost:8080/actuator/health would give us { "status": "UP" }, this help status is customizable, so we can
+      customize it using our own custom business logic.
+
+    . /info: provide information of the app
+      . to expose /info we need to update applications.properties
+          management.endpoints.web.exposure.include=health, info
+          management.info.env.enabled=true
+      . The default is an empty json object, so in order for it to return something inside of it, we need to customize
+      the application.properties.
+        e. g. info.app.name=any name info.app.description=any description info.app.version= any version
+      . Now, any properties starting with info will be used by /info
+
+    . /auditevents: Audit events for our application
+    . /beans: List of all beans registered in the Spring application context
+    . /mappings: List of all @RequestMappings paths
+    . full list in `www.luv2code.com/actuator-endpoints`
+
+  #### Exposing Endpoints
+
+  . By default, only /health is exposed
+  . To expose all actuator endpoints over HTTP
+
+     . In application.properties, we can make use of the * wildcard to expose all endpoints
+     , We can also expose individual endpoints with a comma-delimited list\
+     . But for now, using the wildcard, it is:
+        management.endpoints.web.exposure.include=*
+
+  #### What are beans? 
+
+  Essentially, a bean is just a regular Java object (POJO) that is created, configured, and managed by Spring so we don't
+  have to manually create it ourselves.
+
+  ```java
+
+  public class MyService {
+    public void doSomething() {
+        System.out.println("Doing something important...");
+    }
+  }
+
+  ```
+
+  This class becomes a Spring bean because of the @Component annotation. Spring will:
+
+    . automatically detect it
+    . create an instance of it
+    . inject it wherever needed (e.g, using @Autowired or constructor injection)
+
+  #### Listing Beans Through the Actuator
+
+    . Access `http://localhost:8080/actuator/beans`
+    . It will give us a JSON dump of all the beans registered in the application context
+
+     
+
+
+
+  
+      
+
+
+
+
+    
+
+
+  
+
+
+
+
 
 
 
