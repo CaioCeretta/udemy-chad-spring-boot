@@ -958,6 +958,58 @@ of useful default configurations, preventing us from needing to write all of it 
   . spring-boot-starter-* dependencies inherit version from parent
   . Default configuration of Spring Boot plugin
 
+## Lesson 11 - Spring Boot Dev Tools
+
+### The Problem
+
+  . When running Spring Boot applications
+  . If you make changes to your source code
+  . Then you have to manually restart your app
+
+### The solution
+
+. spring-boot-devtools
+. automatically restarts your application when code is updated
+. simply add the dependency to your POM file
+. no need to write additional code
+. In others IDE this functionality works out of the box, however for IntelliJ some additional configuration is needed
+
+### IntelliJ config
+
+. Does not support Spring Boot Dev Tools by default
+. Select: Preferences -> build, execution, deployment -> compiler
+  . Check box: Build project automatically
+
+. Additional Setting
+. Select: Preferences -> Advanced Settings
+  . Check box: Allow auto-make to start ...
+
+Once we made these two setups, then IntelliJ Community Edition will be able to work with spring boot dev tools
+
+### Spring Boot Dev Tools
+
+. In order to use spring boot dev tools, we simply add
+
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-devtools</artifactId>
+</dependency>
+
+. By adding this, it will automatically restart our application when the code is updated
+
+### Development Process Recap
+
+1. Apply IntelliJ configurations
+2. Edit pom.xml and add spring-boot-devtools
+3. Add new REST endpoint to our app
+4. Verify the app is automatically reloaded.
+
+
+
+
+
+
+
 
 
 
