@@ -1046,8 +1046,6 @@ Once we made these two setups, then IntelliJ Community Edition will be able to w
 
 ## Lesson 13: Spring Boot Actuator
 
-<!-- There is no actuator for spring-boot-starter-parent 3.5.3 -->
-
 Problem
 
 . How can i monitor and manage my application? 
@@ -1135,8 +1133,35 @@ Problem
     . It will give us a JSON dump of all the beans registered in the application context
 
      
+## Lesson 14 Spring Boot Actuator - Accessing Endpoints - Part 1
 
+For this lesson, we simply copied the dev tools project
 
+add this to application.properties
+
+management.endpoints.web.exposure.include=health,info
+management.info.env.enabled=true
+
+update maven and run /actuator/health and /actuator/info, which will be empty by now
+
+## Lesson 15 Spring Boot Actuator - Accessing Endpoints - Part 2
+
+Editing application.properties to customize /info
+
+it can be as simple as
+
+info.app.name=My Super Cool App
+info.app.description=A crazy fun app, yohoo!
+info.app.version=1.0.0
+
+now, every custom property starting with info, should appear on localhost:8080/actuator/info
+
+### Wildcard "*"
+
+. The * wildcard exposes all endpoints
+. It can also expose individual endpoints with a comma-delimiter
+. Now we can view endpoints such as /beans or /threaddump (useful for analyzing and profiling application's performance)
+ or /mappings (useful for finding out which request mappings are available)
 
   
       
