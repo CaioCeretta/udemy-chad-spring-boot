@@ -1163,6 +1163,57 @@ now, every custom property starting with info, should appear on localhost:8080/a
 . Now we can view endpoints such as /beans or /threaddump (useful for analyzing and profiling application's performance)
  or /mappings (useful for finding out which request mappings are available)
 
+ ## Lesson 16 - Securing Endpoint
+
+  . Previously we saw how to make all endpoints available on the url
+  . However, we probably may not want to expose all of this information for anyone on the web
+  . Add Spring Security to project and endpoints are secured
+  . We can do it by adding the dependency
+
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+  </dependency>
+
+  . The only caveat is that the /health will still be available, but we can disable it
+
+  
+  ### Secured Endpoints
+
+  . Now, when accessing /actuator/beans
+  . Spring security will now prompt for a login and the user will have to give their username/password in order to access
+  those given end points
+
+  The default username and passwords are: 
+
+  username: user
+  password: generated security password available on the console logs. e.g. 
+  `Using generated security password: b4ab0328-942c-4fd4-be37-b886b9b26bd5` 
+
+
+  . For overriding these defaults, in `application.properties` we add something like
+
+  spring.security.user.name=caio
+  spring.security.user.password=cerettasoares123
+
+  .  We may wonder: "Ok, i want to do something more than just this .properties file". And we can customize spring security
+  for the spring boot actuator, so we can use database for roles, encrypted passwords and so on...
+
+  ### Excluding Endpoints
+
+  . To exclude /health and /info we simply add an entry in our .properties file as `management.endpoints.web.exposure.exclude=health,info
+
+  ### Spring Boot Actuator Documentation
+
+  `www.luv2code.com/actuator-docs`
+
+  ### Development Process
+
+  1. Edit pom.xml and add spring-boot-starter-security
+  2. Verify security on actuator endpoints for: /beans etc
+  3. Disable endpoints for /health and /info
+
+
   
       
 
