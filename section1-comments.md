@@ -1218,7 +1218,70 @@ now, every custom property starting with info, should appear on localhost:8080/a
   This course lesson was already made during thee 16th one, is just about the security which were already applied in the
   previous project
 
+## Lesson 19: Running spring boot from the command line
 
+. During development we spend most of our time in the IDEs: IntelliJ, eclipse, Netbeans. However, we may want to run our
+Spring Boot applications outside of the IDE
+
+. One approach, is running it from the command line.
+
+### Command Line
+
+. When running from the command-line, there is not need to have IDE open/running
+. Since we're using Spring Boot, the server is embedded in our JAR file
+  . No need to have separate server installed/running
+. Spring Boot apps are self contained and include the server already
+
+### Running from the command line
+
+. A jar such as mycoolapp.jar includes the code and the tomcat server, for example, therefore, it is a self containing
+unit and there is nothing else to install. 
+. We have two options for running the app
+  . Option 1: Use java -jar
+
+    - If we have a spring boot application such as mycoolapp.jar we would simply run it with java -jar mycoolapp.jar
+
+  . Option 2: Use Spring Boot Maven plugin
+    
+    - In our spring boot projects we have the mvnw and the mvnw.cmd files 
+    - These files allow us to run a Maven project with no need to have Maven installed or present on our computer
+    - If correct version of Maven is NOT found on our computer
+      - It automatically downloads correct version and runs Maven
+    - Two files are provided
+      - mvnw.cmd for MS Windows
+      - mvnw.sh for Linux / Mac
+  
+
+  #### Maven Wrapper files
+
+    , If we already have Maven installed previously
+      . Then we can ignore / delete the mvnw files
+
+    . Just use Maven as we normally would with `mvn clean compile test`
+
+  #### Use Spring Boot Maven plugin
+
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </build>
+
+
+  This entry is already generated for us on our pom.xml for the spring boot maven plugin, so we can use this plugin to
+  easily execute run our app. Therefore, to package our application, we say `./mvnw spring-boot:run`. We could also just
+  use mvn package or mvn spring-boot:run if we already have Maven installed.
+
+
+  #### Development Process
+
+  1. Exit the IDE
+  2. Package the app using mvnw package
+  3. Run app using java -jar
+  4. Run app using Spring Boot Maven plugin, mvnw spring-boot:run
 
 
     
