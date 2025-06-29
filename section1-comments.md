@@ -1284,12 +1284,21 @@ unit and there is nothing else to install.
   4. Run app using Spring Boot Maven plugin, mvnw spring-boot:run
 
 
-    
+## Lesson 20 - Running from command line - prep. Running the app outside the IDE
 
+  ● Command line
 
-  
+    ○ Open the folder on the terminal
+    ○  run `./mvnw package` or `mvnw package` on windows
+    ○ This will create a `target\appName-0.0.1-SNAPSHOT.jar`
+    ○ Run `java -jar target\snapshot-created-name.jar
+    ○ The spring boot app is now up and running and can be accessed normally
 
+  ● Using Spring Boot Maven Plugin
 
+    ○ Open the folder on the terminal
+    ○ run `./mvnw spring-boot:run`
+    ○ Same result
 
 
 
