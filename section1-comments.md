@@ -1,5 +1,5 @@
 
-Lesson 1 -  Spring boot overview
+## Lesson 1 -  Spring boot overview
 
 ### First of all, what is Spring?
 
@@ -442,7 +442,7 @@ computer -> if we don't have the files in our local repo, maven go out in the in
   . Based on config file, Maven will add JAR files accordingly
 
 
-## Lesson 5 - Standard Directory Structure
+## Lesson 6 - Standard Directory Structure
 
   `The default folder structure is:
   src/main/java/<groupIdDomain>/<groupIdSubdomain>/<artifactId>
@@ -514,7 +514,7 @@ my-super-cool-app/
 
     . Learning maven allow us to run a project with minimal local configuration
 
-## Lesson 6 - Maven key concepts
+## Lesson 7 - Maven key concepts
 
 . POM File - pom.xml
 
@@ -635,7 +635,7 @@ my-super-cool-app/
     Option 2: Visit `https://central,sonatype.com/` (easiest approach) — go to the maven central repository and search for
     the projects and also get those details
 
-  ## Lesson 7 - Exploring Spring Boot Project Files - Part One
+  ## Lesson 8 - Exploring Spring Boot Project Files - Part One
 
   ### Spring Initializr
 
@@ -707,7 +707,7 @@ my-super-cool-app/
   example MycoolappApplication.java. When we created our rest controller test, inside the java app folder, we created a
   rest package and a controller inside, where we used this controller to expose a very simple API. 
 
-  ## Lesson 8 - Exploring Spring Boot Project Files - Part Two
+  ## Lesson 9 - Exploring Spring Boot Project Files - Part Two
 
   ### Application Properties
 
@@ -762,7 +762,7 @@ my-super-cool-app/
   include a file named, for example, `MycoolappApplicationTests.java`. Initially this file is very basic, there is no
   real code, we add our own custom tests in this file. 
 
-## Lesson 9 - Spring Boot Starters
+## Lesson 10 - Spring Boot Starters
 
 ### The Problem
 
@@ -856,7 +856,7 @@ how:
 . Click on View > Tool Windows > Maven Projects > Dependencies
 . Expand whichever starter we want.
 
-## Lesson 10 - Spring Boot Starter Parent
+## Lesson 11 - Spring Boot Starter Parent
 
 spring-boot-starter-parent is a parent POM provided by Spring Boot. He is included in our maven project to inherit a series
 of useful default configurations, preventing us from needing to write all of it manually
@@ -958,7 +958,7 @@ of useful default configurations, preventing us from needing to write all of it 
   . spring-boot-starter-* dependencies inherit version from parent
   . Default configuration of Spring Boot plugin
 
-## Lesson 11 - Spring Boot Dev Tools
+## Lesson 12 - Spring Boot Dev Tools
 
 ### The Problem
 
@@ -1005,7 +1005,7 @@ Once we made these two setups, then IntelliJ Community Edition will be able to w
 4. Verify the app is automatically reloaded.
 
 
-## Lesson 12 - Dev Tools - Coding
+## Lesson 13 - Dev Tools - Coding
 
 . Creating folder to hold all section 1 projects
 . Moving mycoolapp to this folder and renaming it to 01-spring-boot-demo
@@ -1044,7 +1044,7 @@ Once we made these two setups, then IntelliJ Community Edition will be able to w
   . Open the controller and a new REST endpoint and test it out
 
 
-## Lesson 13: Spring Boot Actuator
+## Lesson 14: Spring Boot Actuator
 
 Problem
 
@@ -1133,7 +1133,7 @@ Problem
     . It will give us a JSON dump of all the beans registered in the application context
 
      
-## Lesson 14 Spring Boot Actuator - Accessing Endpoints - Part 1
+## Lesson 15 Spring Boot Actuator - Accessing Endpoints - Part 1
 
 For this lesson, we simply copied the dev tools project
 
@@ -1144,7 +1144,7 @@ management.info.env.enabled=true
 
 update maven and run /actuator/health and /actuator/info, which will be empty by now
 
-## Lesson 15 Spring Boot Actuator - Accessing Endpoints - Part 2
+## Lesson 16 Spring Boot Actuator - Accessing Endpoints - Part 2
 
 Editing application.properties to customize /info
 
@@ -1163,7 +1163,7 @@ now, every custom property starting with info, should appear on localhost:8080/a
 . Now we can view endpoints such as /beans or /threaddump (useful for analyzing and profiling application's performance)
  or /mappings (useful for finding out which request mappings are available)
 
- ## Lesson 16 - Securing Endpoint
+ ## Lesson 17 - Securing Endpoint
 
   . Previously we saw how to make all endpoints available on the url
   . However, we probably may not want to expose all of this information for anyone on the web
@@ -1213,9 +1213,10 @@ now, every custom property starting with info, should appear on localhost:8080/a
   2. Verify security on actuator endpoints for: /beans etc
   3. Disable endpoints for /health and /info
 
+## Lesson 18: Securing endpoints
 
-  
-      
+  This course lesson was already made during thee 16th one, is just about the security which were already applied in the
+  previous project
 
 
 
