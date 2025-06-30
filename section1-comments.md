@@ -1300,7 +1300,36 @@ unit and there is nothing else to install.
     ○ run `./mvnw spring-boot:run`
     ○ Same result
 
+## Lesson 21 - Injecting Custom Application Properties - Overview
 
+  ■ Problem: We need our app to be configurable with no hard coding of values
+    ● Solution: Application Properties File
+      ○ By default, Spring Boot reads information from a standard properties file
+        . Located at: src/main/resources/application.properties
+      ○ We can define ANY custom properties in this file
+      ○ Spring Boot app can access properties using @Value notation, with no additional coding or configuration needed
+
+
+  ● Development Process
+
+    1. Define custom properties in application.properties
+    2. Inject properties into Spring Boot application using @Value
+
+
+  Step 1: Define custom application properties. We can give any custom properties names and values, such as
+  `coach.name=Mickey Mouse` or `team.name=The Mouse Club`
+  Step 2: Inject Properties into Spring Boot app using @Value annotation 
+    ○ We are going to make use of the rest controller from previous lessons, to inject, we are going to simply inject
+    the properties, like:  
+
+      @Value("${coach.name}")
+      private String coachName;
+
+      @Value("${team.name}")
+      private String teamName;
+
+    This way, we inject the value within application.properties and assign it to a property of the same type, spring boot
+    access the properties name and make them available with no configuration needed
 
 
 
