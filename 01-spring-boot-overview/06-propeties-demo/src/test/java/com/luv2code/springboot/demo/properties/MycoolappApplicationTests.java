@@ -1,4 +1,4 @@
-package com.luv2code.springboot.demo.actuator;
+package com.luv2code.springboot.demo.properties;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

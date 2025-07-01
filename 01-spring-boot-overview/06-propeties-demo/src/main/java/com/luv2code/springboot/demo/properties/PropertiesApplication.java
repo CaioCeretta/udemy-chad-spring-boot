@@ -1,13 +1,14 @@
-package com.luv2code.springboot.demo.actuator;
+package com.luv2code.springboot.demo.properties;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CommandLineApplication {
+public class PropertiesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CommandLineApplication.class, args);
+		
+		SpringApplication.run(PropertiesApplication.class, args);
 	}
 
 }

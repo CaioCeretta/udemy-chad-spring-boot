@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.luv2code.springboot.demo</groupId>
-	<artifactId>commandLineDemo</artifactId>
+	<artifactId>propertiesDemo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>command-line-demo</name>
-	<description>Command Line project</description>
+	<name>properties-demo</name>
+	<description>Properties project</description>
 	<url/>
 	<licenses>
 		<license/>
