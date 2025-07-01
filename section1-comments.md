@@ -1332,9 +1332,107 @@ unit and there is nothing else to install.
     access the properties name and make them available with no configuration needed
 
 
+## Lesson 22 - Injecting Custom Applications - Coding
+
+  . In this lesson we add the properties name like above, create the private attributes based on them, and inside the rest
+  controller, inject the properties and create routes to retrieve its value 
+
+## Lesson 23 - Spring  Boot Server - Overview
+
+● Spring Boot Properties
+
+ ○ Spring boot can be configured in the application.properties file
+ ○ Server port, context path, actuator, security, etc...
+ ○ Spring boot has over one thousand properties, which can be found in `www.luv2code.com/spring-boot-props` 
+
+● Properties
+
+○ Don't let the 1,000+ properties overwhelm you
+○ The properties are roughly grouped into the following categories: 
+  ■ Core, Web, Security, Data, Actuator, Integration, DevTools, Testing
+
+● Core Properties
+
+  ○ Log Levels Severity
+      ■ This maps the logging levels and sets different severity mappings based on the package name.  
+      It also applies to subpackages. For example: 
+
+      ■ Log levels security mapping 
+      □ logging.level.org.spring-framework=DEBUG
+      □ logging.level.org.spring-hibernate=TRACE
+      □ logging.level.org.spring-love2code=INFO
+
+      ■ Log file name
+      □ logging.file.name=my-crazy-stuff.log,
+      □ logging.file.path=c:/myapps/demo
+
+      ■ For more info about logging: `www.luv2code.com/spring-boot-logging`
+
+  ○ Web Properties
+    ■ HTTP server port
+      □ server.port=7070 (Default is 8080)
+
+    ■ Context path of the application
+      □ server.servlet.context-path=/my-silly-app (Default context path is /)
+
+    ■ Default HTTP session time out
+      □ server.servlet.session.timeout=15m (Default 30 minutes)
+
+  ○ Actuator Properties
+
+    ■ Endpoints to include by name or wildcard
+      □ management.endpoints.web.exposure.include=*
+
+    ■ Endpoints to exclude by name or wildcard
+      □ management.endpoints.web.exposure.exclude=beans,app
+
+    ■ Base path for actuator endpoints
+      □ management.endpoints.web.base-path=/actuator (e.g. http://localhost:7070/actuator/health)
+
+  ○ Security Properties
+
+    ■ Default user name
+      □ spring.security.user.name=admin
+
+    ■ Default user password
+      □ spring.security.user.password=secret
+
+  ○ Data Properties
+
+    ■ JDBC URL of the database
+      □ spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce
+
+    ■ Login username of the database
+      □ spring.datasource.username=caio
+
+    ■ Login password of the database
+
+      □ spring.datasource.password=ceretta
+
+  ■ More information on `www.luv2code.com/spring-boot-props`
+
+● Development Process
+
+  1. Configure the server port
+  
+  2. Configure the application context path
 
 
 
+    
+
+
+  
+
+
+    
+
+    
+
+
+
+
+    
 
 
 
