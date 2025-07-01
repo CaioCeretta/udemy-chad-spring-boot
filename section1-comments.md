@@ -1417,6 +1417,15 @@ unit and there is nothing else to install.
   
   2. Configure the application context path
 
+## Lesson 24 - Spring  Boot Server - Coding
+
+● Development Process
+
+  1. Change server port to 7070 and access it from the web, e.g. `http://localhost:7070/team-info`
+  2. Change the server.servlet.context-path, which will be equal to /mycoolapp, and all requests should
+  be prefixed with /mycoolapp
+  3. 
+
 
 
     
