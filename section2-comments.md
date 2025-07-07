@@ -10,17 +10,15 @@
       ■ Imagine we have a class CricketCoach that needs a FortuneService to give a motivational message. Without injection,
     it would create this object itself
 
-      ```java
+```java
+        public class CricketCoach {
+          private FortuneService fortuneService = new HappyFortuneService(); // Creating here
 
-      public class CricketCoach {
-        private FortuneService fortuneService = new HappyFortuneService(); // Creating here
-
-        public String getDailyFortune() {
-          return fortuneService.getFortune()
+          public String getDailyFortune() {
+            return fortuneService.getFortune(); 
+          }
         }
-      }
-
-      ```
+```
 
       Here, CricketCoach is creating the HappyFortuneService — it depends on it e knows how to build it
 
@@ -29,21 +27,20 @@
       ■ With dependency injection, 'someone' from outside (e.g.: Spring) is responsible for injecting (i.e. provide) this
       ready-to-use `FortuneService` 
 
-        ```java
-
+```java
           public class CricketCoach {
             private FortuneService fortuneService;
 
             // Injecting via constructor (In java, the constructor has the name of the class, not `constructor`)
             public CricketCoach(FortuneService fortuneService) {
-              this.fortuneService = fortuneService
+              this.fortuneService = fortuneService; 
             }
 
             public String getDailyFortune() {
-              return fortuneService.getFortune()
+              return fortuneService.getFortune();
             }
           }
-        ```
+```
 
         □ Now, `CricketCoach` does not create `FortuneService` anymore.
         □ It receives this service from the outside — in other words, it is injected
@@ -117,18 +114,16 @@
       ■ Imagine your app needs a `Coach`. This Coach could be for cricket, baseball, tennis, etc. You want the app to work
       like this:
 
-        ```java
-
+```java
           Coach myCoach = ... // I want the system to give me a Coach
           system.out.println(myCoach.getDailyWorkout())
-
-        ```
+```
        
        ■ But you don't wan't to change the code every time you switch the Coach. You just want to change a configuration
        file.
 
           That's where Inversion of Control comes in: you ask for a Coach, and the Spring Container gives you one, based
-        on a configuration
+        on a configuration!
 
 
   
@@ -143,21 +138,195 @@
       ■ Java Annotations (modern)
       ■ Java Source Code (modern)
 
+
+    ○ Injection Types
+
+        ■ Need to inject this dependency into the controller our inject the code into the given controller, which we will
+      further cover in this class
+
+        □ Constructor Injection
+
+        □ Setter Injection
+
+        ■ Which type of injection should i use? 
+
+          □ Constructor Injection
+            
+            . Use this when you have required dependencies
+            . Generally recommended by the spring.io development team as first choice
+
+          □ Setter  Injection
+
+            . Use this when you have optional dependencies
+            . If dependency is not provided, you app can provide reasonable default logic
+
+    ○ What is Spring AutoWiring?
+
+      ■ For dependency injection, Spring can use autowiring
+
+      ■ Spring will look for a class that matches
+
+        □ Matches by type: class or interface
+
+      ■ Spring will inject it automatically... hence it is autowired
+
+      ■ Autowiring Example
+
+        □ Injecting a Coach implementation
+
+        □ Spring will scan for @Components — any class annotated with the @Component annotation
+
+        □ "Asks" if anyone implement the Coach interface, if so then let's inject them
+
+
     ○ How it works
 
       ■ Spring container kinda works as the object factory, so, my application can talk to the Spring Container: "hey,
       give me a coach object and this coach object may have additional dependencies or additional helpers. Imagine we
       have a head-coach and he may have a staff of assisting coaches, physical trainers, medical staff, and so on. Therefore
       we say: "Hey, give me everything that i need to make use of this given coach", and then it will give to us all put
-      together, ready-to-go, out-of-the-box.
+      together, ready-to-go, out-of-the-box, and this is independency injection using the Spring Contain
 
     ○ Spring Container Refresher
 
-      ■ It has Primary Functions
+      ■ It has two key primary functions
 
-        □ Create and manage object (Inversion of Control)
+        □ One function is create and manage object (Inversion of Control)
 
         □ Inject object's dependencies (Dependency Injection)
+      
+## Lesson 2 - Dependency Injection Overview
+
+  ● @Component annotation
+
+    ○ @Component marks the class as a Spring Bean
+
+      . A Spring Bean is just a regular Java class that is managed by Spring
+
+    ○ @Component annotation also makes the bean available for dependency injection
+
+  ● Example application
+
+    . We have this 'Web Browser', a 'Demo Controller' and a 'Coach'
+    . The endpoint from the web browser is the /dailyworkout, which send the request to the coach, and the controller
+    will communicate to the coach through getDailyWorkout()
+    . Coach will respond with a string like "Practice serves for 15m"
+    . And the controller will return it to the browser
+  
+  ● Development Process - Constructor Injection
+
+    1. Define the dependency interface and class
+    2. Create Demo REST Controller
+    3. Create a constructor in our class for injections
+    4. Add @GetMapping for /getDailyWorkout endpoint
+   
+    ○ Step 1: Define the dependency interface and class: 
+
+      File: Coach.java
+```java
+          package ...
+
+          public interface Coach {
+            String getDailyWorkout();
+          }       
+```
+
+      File: CricketCoach.java
+```java
+        package ...
+
+        import pathToComponent;
+
+        @Component
+        public class CricketCoach implements Coach {
+          
+          @Override
+          public String getDailyWorkout() {
+            return "Practice fast bowling for 15 minutes"
+          }
+        }        
+```
+
+      The @Component annotation marks the class as a Spring Bean and makes it a candidate for the dependency injection.
+
+    ○ Step 2: Create Demo REST Controller
+
+```java
+        package ...packagename;
+
+        import ...RestController;
+
+        @RestController
+        public class DemoController {
+            
+        }
+```
+
+    ○ Step 3: Create a constructor in your class for injections
+
+```java
+
+        package ...packagename;
+        
+        import ...Autowired;
+        import ...RestController; 
+
+        @RestController
+        public class DemoController {
+
+          private Coach myCoach; 
+
+          @Autowired
+          public DemoController(Coach theCoach) {
+            myCoach = theCoach;
+          }
+        }
+```
+
+        Now, `Spring Object Factory` will handle injecting this dependency based on the configuration, we tell string to inject
+        the dependency with the @AutoWired annotation. 
+
+      ○ If we only have one constructor, then the autowired annotation on a constructor is optional 
+
+      ○ At the moment, we only have one coach implementation: `CricketCoach` so Spring can figure out which one it needs.
+      Later on the course, he will cover the case of multiple coach implementations and how to implement it accordingly.
+
+    ○ Step 4:  Add @GetMapping for /dailyWorkout
+
+```java
+
+      package ..packagename;
+
+      import  ...Autowired;
+      import  ..GetMapping;
+      import  ...RestController';
+
+      @RestController
+        public class DemoController {
+
+          private Coach myCoach; 
+
+          @Autowired
+          public DemoController(Coach theCoach) {
+            myCoach = theCoach;
+          }
+
+          @GetMapping(/dailyWorkout)
+          public String getDailyWorkout() {
+            return myCoach.getDailyWorkout(); 
+          }
+        }
+
+        
+
+
+
+
+    
+
+
+
+  
 
 
   
