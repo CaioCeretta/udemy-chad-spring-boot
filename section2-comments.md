@@ -316,9 +316,74 @@
             return myCoach.getDailyWorkout(); 
           }
         }
+```
 
-        
+## Lesson 3: Constructor Injection - Part 1
 
+● Initializr
+
+  1. Go to the Spring Initializr website `http://start.spring.io` 
+  2. Choose Maven for the project type, java as language and spring boot the latest non snapshot
+  3. group `com.luv2code` and for the artifact `springcoredemo`, `jar` for the packaging and latest java
+  4. for the dependencies add: `Spring Boot DevTools` and `Spring Web`
+  5. generate
+
+● Coding
+
+  ○ First of all, we unpack it, and open it into intellij
+
+## Lesson 3: Constructor Injection - Part 2
+
+● Coding
+
+  ○ Create a new interface: double click the springcoredemo package in src/main/java, select new and in the dropdown
+  `Interface`, and create the `Coach`
+  ○ Create a new class: follow the same steps as above, in the place of interface, choose `Class` and name it `CricketCoach`
+  ○ CricketCoach class implement the Coach interface, which will require it to create a getDailyWorkout() method
+  ○ Annotate this class the @Component annotation and use the @Override annotation over the interface function, meaning
+  it will override the declaration in the supertype (in this case, the `Coach` one it implements) 
+  ○ @Component annotation also marks the class as a Spring bean and makes it available for dependency injection
+
+  ○ Implementing getting daily workout
+    ■ Simply choose any sentence you want to motivate!
+  ○ Create Demo REST Controller: right click on the folder artifactNamePackage, and choose new Java Class
+    ■ Annotate it with @RestController
+    ■ Create a constructor in our class for injections
+    ■ Define a private field for the dependency, in this case, an attribute of the dependency type
+    ■ Define a constructor for the dependency injection, annotate the constructor with @AutoWired (It tells spring to inject
+    a dependency, and if we only have one constructor, this annotation is optional), in the constructor params insert a
+    variable of the dependency type and assign to the property, this constructor input 
+    ■ Finally, we add a @GetMapping for /dailyworkout
+
+    ▣ One thing we may notice when accessing the dailyworkout webpage, when implementing the constructor and assigning the
+    myCoach property to the input, when calling the getDailyWorkout method, it will return the getDailyWorkout from the
+    coach class, but no DemoController class was created passing any coach. Why is that? 
+
+      This has to do with Spring Boot's default behavior with @Component scanning and autowiring by type.
+
+      . We have `public interface Coach { String getDailyWorkout() }
+      . We have only one concrete implementation with @Component (which is the CricketCoach)
+      . In our controller we have `public DemoController(Coach the) { this.myCoach = theCoach}
+      
+      What `Spring` does here is
+
+      1. Search for a @Component (or @Service, @Repository, etc.) that implement the Coach interface
+      2. Since there is only one available implementation on the context (CricketCoach), he automatically uses this
+         class to satisfy the injection
+      
+      But one important thing, this only works if there is only one implementation in the Spring Context, if we did
+
+```java
+      @Component
+      public class BaseballCoach implements Coach {
+          public String getDailyWorkout() {
+              return "Spend 30 minutes on batting practice";
+          }
+      }
+```
+
+      We would now have two implementations in the Spring Context. In this case, by trying to run our app, Spring would 
+      give throw error and we would explicitly say which one to use using @Qualifier("cricketCoach) Coach theCoach
 
 
 
@@ -330,3 +395,4 @@
 
 
   
+ 
