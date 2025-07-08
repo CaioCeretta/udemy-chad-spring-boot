@@ -355,23 +355,29 @@
     variable of the dependency type and assign to the property, this constructor input 
     ■ Finally, we add a @GetMapping for /dailyworkout
 
-    ▣ One thing we may notice when accessing the dailyworkout webpage, when implementing the constructor and assigning the
-    myCoach property to the input, when calling the getDailyWorkout method, it will return the getDailyWorkout from the
-    coach class, but no DemoController class was created passing any coach. Why is that? 
+    ▣ One thing we may notice when accessing the /dailyworkout webpage is that when we implement the constructor and
+    assign the myCoach property to the input parameter, calling the getDailyWorkout() method returns the implementation
+    from the `Coach` interface. However, no DemoController class explicitly passes in any coach. Why is that? 
 
-      This has to do with Spring Boot's default behavior with @Component scanning and autowiring by type.
+    This behavior is due to with Spring Boot's default @Component scanning and autowiring by type.
 
-      . We have `public interface Coach { String getDailyWorkout() }
-      . We have only one concrete implementation with @Component (which is the CricketCoach)
-      . In our controller we have `public DemoController(Coach the) { this.myCoach = theCoach}
+    ● We have the interface:
+      .`public interface Coach { String getDailyWorkout() }
+    ● We have only one concrete implementation annotated with @Component — which is the CricketCoach
+    
+    ● In our controller we define a constructor like this:
+      `public DemoController(Coach the) { this.myCoach = theCoach}
+    
+    Here's what `Spring` does behind the scenes:
+
+      1. It scans the project for any classes annotated with @Component (or related stereotypes like @Service, @Repository,
+      etc.) that implement the `Coach` interface
+      2. Since there is only one implementation available in the application context (`CricketCoach`), Spring automatically
+      injects this class to satisfy the dependency
       
-      What `Spring` does here is
-
-      1. Search for a @Component (or @Service, @Repository, etc.) that implement the Coach interface
-      2. Since there is only one available implementation on the context (CricketCoach), he automatically uses this
-         class to satisfy the injection
+      ▣ Important Note: 
       
-      But one important thing, this only works if there is only one implementation in the Spring Context, if we did
+        This only works if there is only one implementation in the Spring Context, if we introduce another one, for example:
 
 ```java
       @Component
@@ -381,10 +387,17 @@
           }
       }
 ```
-
-      We would now have two implementations in the Spring Context. In this case, by trying to run our app, Spring would 
-      give throw error and we would explicitly say which one to use using @Qualifier("cricketCoach) Coach theCoach
-
+      We would now have `two beans` implementing `Coach`. In this case, when running the app, Spring will throw an error 
+      due to ambiguity — It won't know which implementation to inject.
+      
+      To fix this, we must use the @Qualifier annotation to explicitly specify which one to use, like so: 
+      
+```java
+      public DemoController(@Qualifier("cricketCoach") Coach theCoach) {
+        this.myCoach = theCoach
+      }
+      
+```
 
 
     
