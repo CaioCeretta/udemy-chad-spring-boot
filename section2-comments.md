@@ -404,7 +404,7 @@
     ○ Spring Boot DevTools is not automatically reloading when the value of a string changes
       ■ To fix this, in IntelliJ we must go to:
         □ 1. Settings -> Advanced Settings -> Allow auto-make...
-        □ 2. Build, Execution, Deployment -> Compiler -> Build project automatically
+        □ 2. Build, Execution, Deployment -> Compiler -> Build project automatically 
 
 
     
