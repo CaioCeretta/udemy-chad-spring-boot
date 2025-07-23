@@ -332,11 +332,11 @@
 
   ○ First of all, we unpack it, and open it into intellij
 
-## Lesson 3: Constructor Injection - Part 2
+## Lesson 4: Constructor Injection - Part 2
 
 ● Coding
 
-  ○ Create a new interface: double click the springcoredemo package in src/main/java, select new and in the dropdown
+  ○ Create a new interface: double click the springcoredemo package in src/main/java, select `new` in the dropdown, then
   `Interface`, and create the `Coach`
   ○ Create a new class: follow the same steps as above, in the place of interface, choose `Class` and name it `CricketCoach`
   ○ CricketCoach class implement the Coach interface, which will require it to create a getDailyWorkout() method
@@ -405,6 +405,119 @@
       ■ To fix this, in IntelliJ we must go to:
         □ 1. Settings -> Advanced Settings -> Allow auto-make...
         □ 2. Build, Execution, Deployment -> Compiler -> Build project automatically 
+
+  ● Recap: Dependency Injection vs Dependency Inversion Principle
+
+    ○ On the code above, we utilized the DI via constructor injection
+
+     ■ With spring, this is automatically managed by the IoC (inversion of control) container, it injects a coach instance
+     (in our case, `CricketCoach`) inside DemoController
+
+    ○ But what about the "Dependency Inversion Principle" (DIP)? 
+
+      ■ This principle is part of the `SOLID`, and says
+
+        □ High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should
+        not depend on details. Details must depend on abstractions
+
+      ■ But what about Dependency Inversion Principle (DIP)?
+
+        □ Taking our code as an example
+
+          . High-level module: DemoController
+          . Low-level module: CricketCoach
+          . Abstraction: Coach (interface)
+
+
+        □ We are applying the dependency inversion principle because: 
+
+          . DemoController doesn't directly know the implementation (CricketCoach)
+          . It depends on the `Coach` abstractions
+          . Who chooses which concrete implementation to use (in the case: CricketCoach) is the Spring Container through
+            the @Component annotation.
+          . Which means our code obeys DIP and also use DI to perform this dependency
+
+      ■ Summary:
+
+        □ Dependency Injection: Is the technique for providing dependencies of an object (via constructor, setter or field)
+
+        □ Dependency Inversion Principle: Design principle that says that classes must depend on abstractions but not on
+        concrete implementations
+
+# Lesson 5: IDE Warning - No usages
+
+  ● Warning notice: 
+
+    ○ One thing we might have noticed is that the IDE may have given us a warning notice about "no usages"
+
+      ■ For example, on the class CricketCoach, it is listed as no usages, however, we know that we are using it inside
+      our Spring Boot project, because we ran our application, tested it, and received the daily workout from it. So
+      we may wonder: "Why is the IDE saying no usages?"
+          
+        □ Due to the dynamic nature of Spring, sometimes the IDE is not able to figure out how beans are injected.
+
+        □ Since most times we are coding to the interface, we may not explicitly reference the implementation class in
+        our Spring app, we simply let Spring do its work behind the scenes of injecting the appropriate implementation
+        as needed.
+
+        □ There are a lot of things that happen behind the scenes at runtime and the IDE may not be able to determine if
+        a given class or method is used at runtime.
+
+# Lesson 6: Constructor Injection - Behind the scenes
+
+  ● How Spring processes our application
+
+    ○ We have our interface for Coach, the CricketCoach implementation and our `DemoController`
+
+    ○ Spring Framework will perform operations behind the scenes for us
+
+      ■ Behind the scenes, Spring will create a new instance of Coach, `new CricketCoach`, and will also perform constructor
+      injection with our `DemoController`, it will actually inject the coach into the DemoController, such as:
+
+        ```java
+          Coach theCoach = new CricketCoach();
+
+          DemoController demoController = new DemoController(theCoach)
+        ```
+
+      ■ The whole idea of injection is that there is a dependency/helper — such as the `Coach` in this example — for the
+      actual controller
+
+    ○ The "new" keyword.... is that it? 
+
+      ■ We may wonder
+
+        - Is it just the "new" keyword?
+        - I don't need Spring for this... I can do this by myself.
+        - What is the point of spring if it is just the new keyword
+  
+      ■ Is Spring only IoC? 
+
+        □ Spring is more than just IoF and DI
+
+        □ For small basic apps, it may be hard to see the real benefits of Spring.
+
+    ○ For what is Spring designed to?
+
+      ■ Spring is targeted for enterprise, real-time / real-world applications
+
+      ■ Spring provides features such as
+
+        □ Database access and Transactions
+        □ REST API
+        □ Security
+        □ etc...
+
+      ■ Later in the course we will build a real-time CRUD REST API with database access. 
+        
+
+
+
+
+
+
+
+            
 
 
     
