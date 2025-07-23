@@ -1,3 +1,5 @@
+▣ To avoid repetition, Spring Boot will be contracted to `SB`
+
 ## Lesson 1 - Inversion control? 
 
   ● What does "Injecting" mean? 
@@ -323,9 +325,9 @@
 ● Initializr
 
   1. Go to the Spring Initializr website `http://start.spring.io` 
-  2. Choose Maven for the project type, java as language and spring boot the latest non snapshot
+  2. Choose Maven for the project type, java as language and `SB` the latest non snapshot
   3. group `com.luv2code` and for the artifact `springcoredemo`, `jar` for the packaging and latest java
-  4. for the dependencies add: `Spring Boot DevTools` and `Spring Web`
+  4. for the dependencies add: ``SB` DevTools` and `Spring Web`
   5. generate
 
 ● Coding
@@ -359,7 +361,7 @@
     assign the myCoach property to the input parameter, calling the getDailyWorkout() method returns the implementation
     from the `Coach` interface. However, no DemoController class explicitly passes in any coach. Why is that? 
 
-    This behavior is due to with Spring Boot's default @Component scanning and autowiring by type.
+    This behavior is due to with `SB`'s default @Component scanning and autowiring by type.
 
     ● We have the interface:
       .`public interface Coach { String getDailyWorkout() }
@@ -401,7 +403,7 @@
 
   ● IntelliJ Note
 
-    ○ Spring Boot DevTools is not automatically reloading when the value of a string changes
+    ○ `SB` DevTools is not automatically reloading when the value of a string changes
       ■ To fix this, in IntelliJ we must go to:
         □ 1. Settings -> Advanced Settings -> Allow auto-make...
         □ 2. Build, Execution, Deployment -> Compiler -> Build project automatically 
@@ -444,14 +446,14 @@
         □ Dependency Inversion Principle: Design principle that says that classes must depend on abstractions but not on
         concrete implementations
 
-# Lesson 5: IDE Warning - No usages
+## Lesson 5: IDE Warning - No usages
 
   ● Warning notice: 
 
     ○ One thing we might have noticed is that the IDE may have given us a warning notice about "no usages"
 
       ■ For example, on the class CricketCoach, it is listed as no usages, however, we know that we are using it inside
-      our Spring Boot project, because we ran our application, tested it, and received the daily workout from it. So
+      our `SB` project, because we ran our application, tested it, and received the daily workout from it. So
       we may wonder: "Why is the IDE saying no usages?"
           
         □ Due to the dynamic nature of Spring, sometimes the IDE is not able to figure out how beans are injected.
@@ -463,7 +465,7 @@
         □ There are a lot of things that happen behind the scenes at runtime and the IDE may not be able to determine if
         a given class or method is used at runtime.
 
-# Lesson 6: Constructor Injection - Behind the scenes
+## Lesson 6: Constructor Injection - Behind the scenes
 
   ● How Spring processes our application
 
@@ -509,6 +511,103 @@
         □ etc...
 
       ■ Later in the course we will build a real-time CRUD REST API with database access. 
+
+## Lesson 7: Component Scanning - Overview
+
+  ● Scanning for Components Class
+
+    ○ @Component, etc.
+
+    ○ It will automatically register the beans in the Spring container
+
+      ■ Java Source Code
+
+        ○ In our project, we have the, for example, `SpringcoredemoApplication.java`, which is our main `SB` app created
+        by the initializr, and we also have the REST controller.  
+
+        ○ In that SpringcoredemoApplication, we can notice that it imports the SpringBootApplication from the org package, which
+        enables auto configuration, components scanning and additional configuration with `SB`.
+
+      ■ Behind the scenes, that annotation is composed of the following annotations
+
+        □ @EnableAutoConfiguration
+        □ @ComponentScan
+        □ @Configuration
+
+  ● Annotations
+
+    ○ @SpringBootApplication is composed of the following annotations
+
+      ■ @EnableAutoConfiguration: Enables `SB`'s auto-configuration support
+      ■ @ComponentScan: Enables component scanning of current package also recursively scan sub-packages
+      ■ @Configuration: Able to register extra beans with @Bean or import other configuration classes
+
+        □ Java Source Code:
+
+          ```java
+          package ...springcoredemo;
+          
+          import ...boot.SpringApplication;
+          import ...boot.autoconfigure.SpringBootApplication;
+
+          @SpringBootApplication
+          public class SpringcoredemoApplication {
+
+            public static void main(String [] args) {
+              SpringApplication.run(SpringcoredemoApplication, args);
+            }
+          }
+          ```
+
+          . The SpringApplication.run allow us to bootstrap our `SB` app
+          . And SpringcoredemoApplication is a reference to the actual name of the class
+
+          . Behind the scenes it will create the application context and register all beans and also start the embedded
+          server.
+
+   ● More on Component Scanning
+
+     ○ By default, SP starts component scanning
+
+      ■ From same packages as our main Spring B
+      ■ Also scans sub-packages recursively
+
+    ○ This implicitly defines a base search package that we can make use of
+
+      ■ Allows us to leverage default component scanning
+      ■ No need to explicitly reference the base package name
+
+    ○ Putting this together would be
+
+      ■ Main Spring Boot application class, automatically component scans package and sub-packages
+      ■ We can create any other sub-packages we want within src/main/java/groupId/artifactName
+      ■ Spring automatically scans everything inside this folder
+
+      ■ One pitfall when making use of SB is using different packages and moving things around the workspace, for example
+
+        □ Or whole app is within the artifactName folder, but we create a folder outside of it, only inside of the groupId
+        folder, such as `demo/utils` and by default, SB will not component scan these packages, only package of main SB
+        application class and sub-packages
+
+      ■ Default scanning is fine if everything is under origin.artifactname folder
+
+        □ But what about our other packages? 
+
+          . Such as org.acme.cart, com.luv2code.util, edu.cmu.srs, how does this work out and how can we configure this
+          accordingly?
+
+            - In our SB application annotation, we can tell explicitly to scan certain base packages with
+              scanBasePackages={"org.acme.cart", "com.luv2code.util", "edu.cmu.srs"}
+
+
+
+
+        
+
+    
+
+
+
         
 
 
