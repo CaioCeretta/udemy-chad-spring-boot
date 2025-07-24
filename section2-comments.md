@@ -565,7 +565,7 @@
           . Behind the scenes it will create the application context and register all beans and also start the embedded
           server.
 
-   ● More on Component Scanning
+  ● More on Component Scanning
 
      ○ By default, SP starts component scanning
 
@@ -599,6 +599,22 @@
             - In our SB application annotation, we can tell explicitly to scan certain base packages with
               scanBasePackages={"org.acme.cart", "com.luv2code.util", "edu.cmu.srs"}
 
+
+## Lesson 8: Component Scanning - Coding - Part 1
+
+    ○ Copy and paste previous code, change the pom.xml with the new name, and the package/class name
+
+    ○ Create two new packages within the artifactId folder — rest and common
+
+      ■ Move the DemoController to the `rest` package  
+
+      ■ Also move Coach and CricketCoach to the `common` package
+
+      ■ We can notice that they all are sub packages of src/main/java/group.artifactName package, so they will be component
+      scanned automatically for us.
+
+  
+## Lesson 9: Component Scanning - Coding - Part 2
 
 
 
