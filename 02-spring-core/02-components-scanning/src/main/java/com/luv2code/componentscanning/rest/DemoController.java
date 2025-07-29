@@ -1,6 +1,6 @@
 package com.luv2code.componentscanning.rest;
 
-import com.luv2code.componentscanning.common.Coach;
+import com.luv2code.utils.Coach;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

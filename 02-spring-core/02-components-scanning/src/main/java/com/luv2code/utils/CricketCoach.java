@@ -1,4 +1,4 @@
-package com.luv2code.componentscanning.common;
+package com.luv2code.utils;
 
 import org.springframework.stereotype.Component;
 
