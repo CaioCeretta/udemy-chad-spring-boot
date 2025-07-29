@@ -616,9 +616,40 @@
   
 ## Lesson 9: Component Scanning - Coding - Part 2
 
+    ● New package under java/groupId folder, called `utils`
+      ○ The important thing to note is that is no longer a subpackage of our componentscanning project, so we may have
+      some issues with our default component scanning
+
+      ○ Go into the componentscanning package/ common and move Coach and CricketCoach to the utils package
+
+      ○ Now notice our main spring boot application, which is ComponentScanningApplication, will scan everything in this
+      package and any subpackages, but by default spring will not component scan this new package (com.luv2code/utils).
+        ■ If we try running the app now, we can notice that the application fails to start, and this happens because 
+        DemoController constructor required a bean of type `com.luv2code.utils.Coach`, that could not be found.
+
+        ■ This happen because it is no longer part of the default @Component scanning.
+          □ Now we need to explicitly tell SP how to find these other packages out there 
+
+            - In order to do accomplish that, we must edit the application @SpringBootApplication annotation
+            - Inside the annotation parentheses, we explicitly list base packages to scan with scanBasePackages argument
+            with a comma delimited list with the packages that we want to scan, such as.
+
+            . ```java
+              @SpringBootApplication(
+                scanBasePackages = {
+                    "com.luv2code.componentscanning",
+                    "com.luv2code.utils"
+                }
+            )
+            ```
+
+            . Remember, for java arrays, like in these cases, we use {}
+
+            . By fixing the annotation and telling SP to scan the other package too, the issue will be resolved.
+
+      
 
 
-        
 
     
 
