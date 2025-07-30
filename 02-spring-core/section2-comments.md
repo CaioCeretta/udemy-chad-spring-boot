@@ -804,60 +804,66 @@
             }
           ```
 
-  ● Spring Injection Types
+  ## Lesson 12: Field Injection (Field Injections with Annotations and Autowiring)
 
-    ○ Recommend by the spring.io development team
-      ■ Constructor Injection: Required dependencies
-      ■ Setter Injection: optional dependencies
-    
-    ○ Not recommended by the spring.io development team
-      ■ Field Injection
+    ● Spring Injection Types
 
-    ○ Field Injection... No longer cool
+      ○ Recommend by the spring.io development team
+        ■ Constructor Injection: Required dependencies
+        ■ Setter Injection: optional dependencies
+      
+      ○ Not recommended by the spring.io development team
+        ■ Field Injection
 
-      ■ In the early days, field injection was popular on Spring projects
-        □ In recent years, it has fallen out of favor
+      ○ Field Injection... No longer cool
 
-      ■ In general, it makes the code harder to unit test
+        ■ In the early days, field injection was popular on Spring projects
+          □ In recent years, it has fallen out of favor
 
-      ■ As a result, the spring.io team does not recommend field injection
-        □ However, we still see it being used on legacy projects, and on old blog posts on the internet
+        ■ In general, it makes the code harder to unit test
 
-      ■ Field injection is the idea of injecting dependencies by setting field values on our class directly (even private
-      fields), and this is accomplished by using `Java Reflection`
+        ■ As a result, the spring.io team does not recommend field injection
+          □ However, we still see it being used on legacy projects, and on old blog posts on the internet
 
-      ■ Code example: 
+        ■ Field injection is the idea of injecting dependencies by setting field values on our class directly (even private
+        fields), and this is accomplished by using `Java Reflection`
 
-        ○ Configure the dependency injection with Autowired Annotation
+        ■ Code example: 
 
-          ```java
-            package com.love2code...;
+          ○ Configure the dependency injection with Autowired Annotation
 
-            import org.springframework.beans...;
+            ```java
+              package com.love2code...;
 
-            @RestController
-            public class DemoController {
-              @Autowired
-              private Coach myCoach;
+              import org.springframework.beans...;
 
-              // no need for constructors or setters
+              @RestController
+              public class DemoController {
+                @Autowired
+                private Coach myCoach;
 
-              @GetMapping("/dailyworkout")
-              public String getDailyWorkout() {
-                return myCoach.getDailyWorkout();
+                // no need for constructors or setters
+
+                @GetMapping("/dailyworkout")
+                public String getDailyWorkout() {
+                  return myCoach.getDailyWorkout();
+                }
+
               }
+            ```
 
-            }
-          ```
+            ■ With the @Autowired annotation on the attribute, Spring will inject a given coach implementation and it will
+            do it behind the scenes even on a private field, automatically or directly set it on this controller. 
 
-          ■ With the @Autowired annotation on the attribute, Spring will inject a given coach implementation and it will
-          do it behind the scenes even on a private field, automatically or directly set it on this controller. 
+            ■ We can notice that there is no need for constructors, no need for setters, Spring sets the field directly.
 
-          ■ We can notice that there is no need for constructors, no need for setters, Spring sets the field directly.
+            ■ However, it is not recommended by the spring.io development team, since it makes the code harder to test.
 
-          ■ However, it is not recommended by the spring.io development team, since it makes the code harder to test.
+  ## Lesson 13: Qualifiers - Overview (Annotation Autowiring and Qualifiers)
 
+    ● Autowiring
 
+      u
 
 
 
