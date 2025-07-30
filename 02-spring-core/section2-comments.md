@@ -634,7 +634,7 @@
             - Inside the annotation parentheses, we explicitly list base packages to scan with scanBasePackages argument
             with a comma delimited list with the packages that we want to scan, such as.
 
-            . ```java
+            ```java
               @SpringBootApplication(
                 scanBasePackages = {
                     "com.luv2code.componentscanning",
@@ -647,11 +647,238 @@
 
             . By fixing the annotation and telling SP to scan the other package too, the issue will be resolved.
 
+## Lesson 10: Setter Injection - Overview
+
+  ● We covered constructor injection and now'll we'll talk about Setter Injection
+
+    ○ Setter injection inject dependencies by calling setter method(s) on your class.
+
+    ○ Autowiring example
+
+      ■ Inject a Coach implementation
+      ■ Spring will scan for @Components and basically say: "Hey, any one implements the Coach interface?"
+        □ If so, let's inject them. For example: CricketCoach
+
+    ○ Development Process - Setter Injection
+
+      1. Create setter method(s) in your class for injection
+   
+        ```java
+
+          @RestController
+          public class DemoController {
+            private Coach myCoach;
+
+            //Setter injection
+            public void setCoach(Coach theCoach) { 
+              myCoach = theCoach;
+            }
+          }
+        ```
+
+      2. Configure the dependency injection with @Autowired Annotation
+   
+          ```java
+            
+            @RestController
+            public class DemoController {
+              private Coach myCoach;
+
+              @Autowired
+              public void setCoach(Coach theCoach) {
+                myCoach = theCoach
+              }
+            }
+
+          ```
+
+          The Spring Framework will perform operations behind the scenes for us
+
+    ○ How Spring processes our application
+
+      ■ It has the Coach Interface, the CricketCoach implementation, and the DemoController.
+
+      ■ We want to inject the dependency into the DemoController
+
+      ■ Behind the scenes, Spring will create an instance of cricketCoach, as well as an instance of DemoController, and pass
+       the coach implementation to the setter
+
+        ```java
+          Coach theCoach = new CricketCoach();
+
+          DemoController demoController = new DemoController();
+
+          demoController.setCoach(theCoach)
+        ```
+
+        □ If we have a RestController with a setter such as the DemoController has the `setCoach` with an Coach parameter,
+        and it is the only `Coach` implementation noted with @Component. Behind the scenes, Spring does as pointed, it
+        automatically calls setCoach method if only one dependency is compatible.
+
+    ○ We can inject any dependency by calling ANY method on our class by giving the @Autowired annotation.
+
+    ○ Instead of a traditional method, we can annotate the method with Autowired and we can simply give any method name for
+    this given method an Spring will handle the dependency injection for us
+
+      ```java
+
+        @RestController
+        public class DemoController {
+          
+          private Coach myCoach;
+
+          @Autowired
+          public void doSomeStuff(Coach theCoach) {
+            myCoach = theCoach;
+          }
+
+          
+        }
+      ```
+
+      ■ We can give any method name for this given method and spring handles it for us 
+
+      ■ Setter injection should be used when we have optional dependencies, and if is a dependency is not provided, our
+      app can provide reasonable default logic.
+
+    ○ Autowired
+      
+        ■ @Autowired can be omitted after Spring 4.3. This class should be used only if there is only one public setter
+          with a parameter, Spring can infer automatically that it must be used for dependency injection
+
+          So if in the case above, we omitted the @Autowired, is work as long as it is the only setter with a parameter.
+
+        ■ We must explicitly use it when:
+
+            . There are many setters or many methods with a parameter, then Spring doesn't know which one to choose.
+            . If we want to let the intention clear (good practice in large teams).
+            . If we are using injection by constructor and want to keep the compatibility with older versions (Spring < 4.3)
+
+    ○ Always prefer constructor injection
+
+      ■ In general, the constructor injection is more recommended because:
+
+        . Easies tests
+        . Ensures Immutability
+        . Avoid partially injected dependencies    
+
+        - In this case, @Autowired is also optional in case there is only one constructor      
+
+## Lesson 11: Setter Injection - Coding
+
+  ● First, we start by copying and pasting the constructor injection project, and rebuild project, which helps with auto
+  reloading.
+
+  ● Steps
+
+    ○ Create setter method in our class for injections
+
+    ○ Configure the dependency with @Autowired annotation
+
+    ○ Change the controller, instead of saying that the constructor must receive a parameter of type Coach, remove it and
+    create a setCoach function, annotated with @Autowired with a parameter of Coach type
+
+    ○ Instead of using a setCoach method, use any other name, such as 'doSomeStuff' because it is annotated with @autoWired,
+    Spring will use it for dependency injection
+
+    ○ Even though in most recent `SP` versions, @Autowired is not strictly needed, there are some caveats to consider
+
+      ■ Situations where it is NOT needed
+
+        □ Only one setter method
+        □ It follows the setXyz() name pattern
+        □ If there is only one bean that implements the interface required for the type
+        □ Therefore, Spring can automatically deduct who this method must use
+
+      ■ Situations where it is needed even with only one implementation
+
+        □ If we change the method name for something that does not start with `set` 
+        □ If there are other Coach implementations in the future, now spring won't know which Coach to choose, even with
+        `setCoach`, it needs @Autowired with a @Qualifier, such as:
+
+          ```java
+            @Autowired
+            @Qualifier("cricketCoach")
+            public void setCoach(Coach coach) {
+              this.myCoach = coach
+            }
+          ```
+
+  ● Spring Injection Types
+
+    ○ Recommend by the spring.io development team
+      ■ Constructor Injection: Required dependencies
+      ■ Setter Injection: optional dependencies
+    
+    ○ Not recommended by the spring.io development team
+      ■ Field Injection
+
+    ○ Field Injection... No longer cool
+
+      ■ In the early days, field injection was popular on Spring projects
+        □ In recent years, it has fallen out of favor
+
+      ■ In general, it makes the code harder to unit test
+
+      ■ As a result, the spring.io team does not recommend field injection
+        □ However, we still see it being used on legacy projects, and on old blog posts on the internet
+
+      ■ Field injection is the idea of injecting dependencies by setting field values on our class directly (even private
+      fields), and this is accomplished by using `Java Reflection`
+
+      ■ Code example: 
+
+        ○ Configure the dependency injection with Autowired Annotation
+
+          ```java
+            package com.love2code...;
+
+            import org.springframework.beans...;
+
+            @RestController
+            public class DemoController {
+              @Autowired
+              private Coach myCoach;
+
+              // no need for constructors or setters
+
+              @GetMapping("/dailyworkout")
+              public String getDailyWorkout() {
+                return myCoach.getDailyWorkout();
+              }
+
+            }
+          ```
+
+          ■ With the @Autowired annotation on the attribute, Spring will inject a given coach implementation and it will
+          do it behind the scenes even on a private field, automatically or directly set it on this controller. 
+
+          ■ We can notice that there is no need for constructors, no need for setters, Spring sets the field directly.
+
+          ■ However, it is not recommended by the spring.io development team, since it makes the code harder to test.
+
+
+
+
+
+
+
       
 
 
 
+
+
+
+
+
+
+
+
+
+
     
+
 
 
 
