@@ -863,9 +863,109 @@
 
     ● Autowiring
 
-      u
+      ○ Injecting a Coach implementation
+      ○ Spring will scan @Components
+      ○ Any one implements Coach interface? 
+      ○ If so, let's inject them... oops, which one? 
+
+      ○ If we have multiple implementations, which algorithm will tell which one it should implement?
+
+    ● Multiple Coach Implementations
+
+      ○ Let's say we have CricketCoach, BaseballCoach, TrackCoach, TennisCoach, and they all implement Coach
+
+        ■ If we have more than one implementation with @Components annotation, implement a constructor simply receiving
+        a parameter of type Coach and no more coding, it will generate an error: 
+
+          □ Parameter 0 of constructor in `path-to-controller` required a single bean, but 4 were found
+            - baseballCoach
+            - cricketCoach
+            - tennisCoach
+            - trackCoach
+
+      ○ Solution: Be specific! - @Qualifier
+
+        ■ The code consists of basically
+
+          ```java
+
+            // imports
+
+            // class initialization
+
+              //constructor
+              @Autowired
+              public DemoController(@Qualifier("cricketCoach") Coach theCoach) {
+                myCoach = theCoach;
+              }
+
+              /// rest of code
+            ```
+
+            □ In the @Qualifier we specify the bean id: CricketCoach which has the same name as the class, with the only
+            difference that is camelCase.
+
+      ○ But what about Setter Injections? 
+
+        ■ If we are using Setter Injection, we can also apply @Qualifier annotation
+
+          ```java
+            // Same code as before
+
+            @Autowired
+            public void setCoach(@Qualifier("cricketCoach") Coach theCoach) {
+              myCoach = theCoach;
+            }
+
+              // Same code as before
+          ```
+
+  ## Lesson 15 ~ 16: Qualifiers - Coding 
+
+    ● Normal Housekeeping, create new project to it
+
+    ● Change the code back to constructor injection
+
+    ● Create new @Component implementations for the Coach interface, and it will now return an error
+
+    ● On the CricketCoach, add the qualifier, such as  
+      public DemoController(@Qualifier("baseballCoach") Coach theCoach) {
+        myCoach = theCoach
+      }
 
 
+
+        
+
+
+  ## Comments not related to lessons
+
+    ○ Autowired
+      
+        ■ @Autowired can be omitted after Spring 4.3. This class should be used only if there is only one public setter
+          with a parameter, Spring can infer automatically that it must be used for dependency injection
+
+          So if in the case above, we omitted the @Autowired, is work as long as it is the only setter with a parameter.
+
+        ■ We must explicitly use it when:
+
+            . There are many setters or many methods with a parameter, then Spring doesn't know which one to choose.
+            . If we want to let the intention clear (good practice in large teams).
+            . If we are using injection by constructor and want to keep the compatibility with older versions (Spring < 4.3)
+
+    ○ This is not always required
+
+      ■ The code, such as the myCoach from the RestController, works without `this` because in Java, `this` is optional
+      in cases where there is no ambiguity between the parameter names and classes fields
+
+        □ In our case, the parameter is called theCoach and the field is called myCoach, since they are different, the
+        compiler knows exactly to what we are referring to, so writing myCoach = theCoach; is enough
+        □ It would only be necessary, if the parameter name, in this case, was also myCoach, it would be necessary to avoid
+        confusions in the compiler
+    
+
+    ○ Even though a class may implement the interface method, we must annotate it as @Component so it will be marked as a 
+    Spring Bean
 
 
 
