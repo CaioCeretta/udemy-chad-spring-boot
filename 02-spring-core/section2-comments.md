@@ -1128,7 +1128,31 @@
         
   ## Lesson 20 ~ 21: Lazy Initialization - Coding
 
-    ● Go to IntelliJ, do the normal housekeeping, create the new project, and utilize what we've just learned.
+    ● Go to IntelliJ, do the normal housekeeping, create the new project, and utilize what we've just learned, with some
+    remarks here
+
+      ○ Add System.out.printLn to every Coach implementation constructor, and also on the DemoController, which will make
+      on the terminal, to show which classes are being initialized
+      ○ By marking the BaseballCoach as lazy, we won't see it in the logs anymore, since it is not being used as a bean
+      anywhere, it basically says: "Call me only if you need me, otherwise, i won't show up"
+      ○ However, by using it in the DemoController constructor @Qualifier annotation, we will now see it being initialized
+      because with Spring's dependency resolution, it creates an instance.
+        ■ But there's one problem, on our DemoController it has two constructors, so baseballCoach may not be correctly
+        injected
+          □ By declaring two constructors on the DemoController, Spring does not know which one to use, and by default,
+          it uses the constructor  without any arguments — Or even fails the injection, depending on the configuration.
+          □ As a result, it executes the constructor with no parameters, that prints in "In the DemoController", but the
+          one that injects the baseballCoach implementation is not executed
+          □ This will cause the baseballCoach, which is lazy, to not be initialized, and for it to be initialized, we can
+          keep both the println and the injection in the same constructor
+            - by implementing, inside the DemoController: 
+  
+              ```java
+                System.out.println("In constructor " + getClass().getSimpleName());
+              ```
+            
+            It instantiates and prints correctly, even though, baseballCoach is @Lazy
+      
 
   ## Lesson 22 - Bean Scopes - Overview
 
