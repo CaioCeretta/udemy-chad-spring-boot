@@ -4,11 +4,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BaseballCoach implements Coach {
+public class TennisCoach implements Coach {
+    public TennisCoach() {
+        System.out.println("In constructor " + getClass().getSimpleName());
+    }
 
-    @Primary
     @Override
     public String getDailyWorkout() {
-        return "Try to hit five home runs!";
+        return "Practice your serve!";
     }
 }

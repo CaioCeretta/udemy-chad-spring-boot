@@ -11,7 +11,8 @@ public class DemoController {
     // define a private field for the dependency
     private Coach myCoach;
 
-    public DemoController(Coach theCoach) {
+    public DemoController(@Qualifier("baseballCoach") Coach theCoach) {
+        System.out.println("In constructor " + getClass().getSimpleName());
         myCoach = theCoach;
     }
 
