@@ -920,7 +920,7 @@
               // Same code as before
           ```
 
-  ## Lesson 15 ~ 16: Qualifiers - Coding 
+  ## Lesson 14 ~ 15: Qualifiers - Coding 
 
     ● Normal Housekeeping, create new project to it
 
@@ -932,6 +932,209 @@
       public DemoController(@Qualifier("baseballCoach") Coach theCoach) {
         myCoach = theCoach
       }
+
+  ## Lesson 16: Primary - Overview
+
+    ● This lesson covers the @Primary Annotation
+
+      ○ Resolving Issue with multiple Coach implementations
+
+        ■ In the case of multiple Coach implementations: such as CricketCoach, BaseballCoach, TennisCoach...
+          □ We solved this issue by making use of the @Qualifier annotation
+          □ We specified a coach by name
+          □ However, there's an alternate solution available...
+
+        ■ Instead of specifying the user by name by using the @Qualifier annotation, we can simply say that we simply
+          need a coach regardless of which implementation to use
+
+          □ This way, "Spring" will "ask": "Hey, if there are multiple coaches out there, then you coaches figure it out
+          and tell me who's the primary coach"
+
+        ■ For this, we make use of this new annotation @Primary, which basically say tht out of the multiple Coach 
+        implementations, that this is the primary annotation that Spring should use in case none is specified.
+          □ Now, using the @Primary annotation in a component, beneath or above the @Component, we can omit the @Qualifier
+          if we want to, and it will choose the @Primary one.
+
+        ■ There is one caveat when using the @Primary annotation
+
+          □ We can only have one @Primary for multiple implementations
+
+          □ By running our app trying to mark more than one class as @Primary, `Spring` will show in the terminal that we
+          have an unsatisfied dependency expressed through constructor parameter and there is no qualifying bean available
+          for the type because no 'primary' bean was found
+
+      ○ Mixing @Primary and @Qualifier
+
+        ■ We may think if we can mix both in the same class
+
+          □ The answer is yes, but we are asking for trouble
+
+          □ @Qualifier has higher priority, so even if we mention a given class as @Primary, that can be overwritten or
+          have higher priority by making use of the @Qualifier annotation
+
+          □ For example, even if some class is a @Primary coach, but on the controller we have some different implementation
+          when the controller uses the @Qualifier, the @Qualifier will overrule the @Primary
+
+      ○ Which one should i use? @Primary or @Qualifier? 
+
+        ■ @Primary leaves it up to the implementation classes 
+
+          □ Could have issue of multiple @Primary classes leading to an error
+
+        ■ @Qualifier allows us to be very specific on which bean we want 
+
+        ■ In general, the recommendation is to use @Qualifier
+
+          □ It's more specific
+
+          □ Higher priority
+
+  ## Lesson 18 - Primary Coding
+
+    ● Move to the intellij editor, do the usual housekeeping and implement what we have just explained
+          
+  ## Lesson 19 - Lazy Initialization - Overview
+
+    ● By default, when our application starts, all beans are initialized
+
+      ○ It will scan for all the @Components, etc...
+
+      ○ Spring will create an instance of each and make them available
+
+    ● Diagnostics: Add `println` to constructors
+
+      ○ For example
+
+        ```java
+          public CricketCoach() {
+          System.out.println("In constructor, " + getClass().getSimpleName())
+          }
+        ```
+
+        ■ Do a similar print to all other classes
+
+    ● When we start the application, it would be basically
+
+        In constructor: BaseballCoach
+        In constructor: CricketCoach
+        In constructor: TennisCoach
+        In constructor: TrackCoach
+        
+
+        □ By default, when our application starts, all beans are initialized, and Spring will create an instance of each
+        and make them available
+
+    ● We can make use of Lazy Initialization
+
+      ○ Instead of creating all beans up front, we can specify lazy initialization
+
+      ○ A bean will only be initialized in the following cases: 
+        ■ It is needed for dependency injection
+        ■ Or it is explicitly requested
+
+      ○ We simply Add the @Lazy annotation to a given class and other rules will come in to play
+
+        ■ Coding Example
+
+          ```java
+
+            imports ...
+
+            @Component
+            @Lazy
+            public class TrackCoach implements Coach {
+              public TrackCoach() {
+                System.out.println("In constructor, " + getClass().getSimpleName());
+              }
+            }
+
+          ```
+        
+          □ This given bean will only be initialized if needed for dependency injection, if it is not needed it won't be
+          created
+
+            ```java
+
+              @RestController
+              public class DemoController {
+                private Coach myCoach; 
+
+                
+                public DemoController(@Qualifier("cricketCoach") Coach theCoach) {
+                  myCoach = theCoach
+                }
+              }
+            ```
+
+              Here we are saying that we need CricketCoach for dependency injection, and when we run the application, we
+              won't see the TrackCoach class, since it has the @Lazy annotation and is not needed
+        
+      ○ Therefore, to configure other beans to lazy initialization
+
+        ■ We would need to add @Lazy to each class
+
+        ■ Turns into tedious work for a large number of classes
+
+        ■ And for this, we can actually set a global configuration property
+
+      
+      ○  Global Configuration
+
+        ■ In the application.properties file, we can add
+
+          □ spring.main.lazy-initialization=true
+
+          □ This way, all beans are lazy, no beans are created until needed, including our DemoController 
+
+        ■ Once we access REST endpoint /dailyworkout spring will determine dependencies for DemoController
+
+          □ For dependency resolution resolution Spring creates instance of CricketCoach first...
+
+            - `Dependency Resolution` is the process where Spring: 
+
+              1. Identifies which dependencies a bean needs (for example, DemoController needs a Coach)
+              2. Locates the beans that satisfy those dependencies
+              3. Creates the necessary beans instances, in case there are none (If they are lazy, for example)
+              4. Injects these dependencies in the bean being created.
+
+              . If all beans are lazy, and a bean needs a dependency, but there's no @Primary nor @Qualifier to indicate
+              which one to use, it will throw the same error as seen before where there are more than one bean that satisfy
+              the condition but it does not know which one to choose
+
+
+          □ Then creates instance of DemoController and injects the CricketCoach into the `DemoController`
+
+      ○ For more diagnostics we can Add println to DemoController constructor
+
+        ■ For dependency resolution, Spring creates an instance of CricketCoach first then creates instance of DemoController
+        and injects the CricketCoach
+
+      ○ Stepping back to Lazy Initialization
+
+        ■ Advantages
+
+          □ Only creates objects as needed 
+          □ May help with faster startup time if we have a large number of components
+        
+        ■ Disadvantages
+
+          □ If we have web related components like @RestController, they are not created until Request, needing to be
+          created first and then use it
+          □ May not discover configuration issues until too late
+          □ Need to make sure to have enough memory for all beans once created
+
+        ■ Lazy Initialization is disabled by default. We should profile our application before configuring lazy init and
+          have to avoid common pitfall of premature optimization
+        
+  ## Lesson 20 ~ 21: Lazy Initialization - Coding
+
+    ● Go to IntelliJ, do the normal housekeeping, create the new project, and utilize what we've just learned.
+
+  ## Lesson 22 - Bean Scopes - Overview
+
+       
+        
+
 
 
 
@@ -966,45 +1169,3 @@
 
     ○ Even though a class may implement the interface method, we must annotate it as @Component so it will be marked as a 
     Spring Bean
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-        
-
-
-
-
-
-
-
-            
-
-
-    
-
-
-
-  
-
-
-  
- 
