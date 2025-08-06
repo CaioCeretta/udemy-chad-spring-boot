@@ -1156,13 +1156,117 @@
 
   ## Lesson 22 - Bean Scopes - Overview
 
-       
-        
+    ● Bean Scopes
+
+      ○ Scope refers to the lifecycle of a bean
+      ○ How long does it live?
+      ○ How many instances are created? 
+      ○ How is the bean shared? 
+
+    ● Default Scope
+
+      ○ Default scope is singleton, which is important to know
+
+    ● Refresher: What is a singleton? 
+
+      ○ Spring Container creates only one instance of the bean, by default
+        ■ It is cached in memory
+        ■ All dependency injections for the bean
+          □ Will reference the SAME bean
+
+    ● Example: 
+
+      ```java
+
+        public class DemoController {
+          private Coach myCoach;
+          private Coach anotherCoach;
+
+          @Autowired
+            public DemoController(
+              @Qualifier("cricketCoach") Coach theCoach
+              @Qualifier("cricketCoach") Coach anotherCoach 
+            ) {
+              myCoach = theCoach
+              anotherCoach = anotherCoach
+            }
+            ...
+
+        }
+      ```
+
+      ○ We have two references, we inject it using @Qualifier("cricketCoach") in both.
+      ○ They both point to the same instance of cricketCoach, since by default Spring beans are singleton beans, there's
+      only one instance that is created. Therefor, both theCoach and myCoach point to the same CricketCoach instance
+    
+    ● Explicitly Specify Bean Scope
+
+      ○ For example, We can also explicitly specify the bean scope, so in our class `CricketCoach` we can make use of the
+      @Scope annotation with: `@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)`
+        ■ This example is redundant in most cases because when we annotate a class with @Component, @Service,
+        @Repository or @Controller and don't specify the @Scope, Spring already treats the bean is singleton by default
+      
+    ● Additional Spring Bean Scopes
+
+      ○ singleton - create a single shared instance of the bean. Default scope.
+      ○ prototype - creates a new bean instance for each injection.
+        ■ Example
+
+          ```java
+            import ...
+
+            @Component
+            @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+            public class CricketCoach implements Coach {
+              ...
+            }
+
+            @RestController
+            public class DemoController {
+              private Coach myCoach;
+              private Coach anotherCoach;
+
+              public DemoController(
+                @Qualifier("cricketCoach") Coach theCoach,
+                @Qualifier("cricketCoach") Coach theAnotherCoach
+              ) {
+                myCoach = theCoach;
+                anotherCoach = theAnotherCoach;
+              }
+            }
+          ```
+
+          □ On this example, theCoach and theAnotherCoach do not share the same instance of CricketCoach, they point to
+          two different areas of the memory
+
+      ○ request - scoped to an http web request. Only used for web apps
+      ○ session - scoped to an http web session. Only used for web apps
+      ○ application - scoped to a web app ServletContext. Only used for web apps
+      ○ websocket - scoped to a web socket . Only used for web apps
+  
+  ● Checking on the scope
+
+    ```java
+        @RestController
+        public class DemoController {
+          private Coach myCoach;
+          private Coach anotherCoach;
 
 
+          public DemoController(
+            @Qualifier("cricketCoach") Coach theCoach,
+            @Qualifier("cricketCoach") Coach theAnotherCoach
+          ) {
+            myCoach = theCoach;
+            anotherCoach = theAnotherCoach;
+          }
 
-
-        
+          @GetMapping("/check")
+          public String check() {
+            return "Comparing beans: myCoach === anotherCoach, " + (myCoach == anotherCoach)
+          }
+        }
+    ```
 
 
   ## Comments not related to lessons
@@ -1193,3 +1297,24 @@
 
     ○ Even though a class may implement the interface method, we must annotate it as @Component so it will be marked as a 
     Spring Bean
+
+    ○ Injection Flow Step by Step
+
+      ■ Steps: 
+        1 - Spring scans the components
+          . It looks for classes annotated with @Component, @Service, @Repository, @Controller, @RestController, etc.
+          . Instantiates these classes as `Beans`
+        2. For each class that needs to be instantiated, Spring:
+          . Looks for the available constructors
+          . If there is just one constructor, it uses that one automatically, even without @Autowired
+          . If there is more than one constructor, it fetches the one with the @Autowired annotation to know which one to
+          use
+          . If no constructor has @Autowired and there is more than one, Spring throws an error, since it doesn't know which
+          one to use
+
+      ■ And how does it know what to inject? 
+
+        Based on the parameter type and using @Qualifier if needed
+
+    
+
