@@ -1244,29 +1244,132 @@
       ○ application - scoped to a web app ServletContext. Only used for web apps
       ○ websocket - scoped to a web socket . Only used for web apps
   
-  ● Checking on the scope
+    ● Checking on the scope
 
-    ```java
-        @RestController
-        public class DemoController {
-          private Coach myCoach;
-          private Coach anotherCoach;
+      ```java
+          @RestController
+          public class DemoController {
+            private Coach myCoach;
+            private Coach anotherCoach;
 
 
-          public DemoController(
-            @Qualifier("cricketCoach") Coach theCoach,
-            @Qualifier("cricketCoach") Coach theAnotherCoach
-          ) {
-            myCoach = theCoach;
-            anotherCoach = theAnotherCoach;
+            public DemoController(
+              @Qualifier("cricketCoach") Coach theCoach,
+              @Qualifier("cricketCoach") Coach theAnotherCoach
+            ) {
+              myCoach = theCoach;
+              anotherCoach = theAnotherCoach;
+            }
+
+            @GetMapping("/check")
+            public String check() {
+              return "Comparing beans: myCoach === anotherCoach, " + (myCoach == anotherCoach)
+            }
           }
+      ```
 
-          @GetMapping("/check")
-          public String check() {
-            return "Comparing beans: myCoach === anotherCoach, " + (myCoach == anotherCoach)
-          }
-        }
-    ```
+      ○ Singleton returns true and prototype returns false, since it won't be the same bean
+
+  ## Lesson 23 - Bean Scopes - Code
+
+    ● Code and explanations will be in IntelliJ
+
+    ● Comments
+      ○ @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) and @Scope("prototype") are basically the same thing, however, 
+      the first approach is more safe against typing errors and more used in bigger projects
+
+  ## Lesson 24 - Bean lifecycle methods - Overview
+
+    ● Bean lifecycle
+
+      ○ Container Started -> Bean instantiated -> Dependencies Injected -> Internal Spring Processing -> *Our custom methods* 
+        ■ In `SP` (and in the spring framework), "container"  is the spring app context, is the part of the app responsible
+        for managing the beans (instantiate them, inject dependencies, controls the life cycle, applies configurations
+        such as AOP, etc)
+        ■ In the custom method point, our bean is ready to use
+        ■ Once the container is shut down and stopped, then it will make a call to our custom destroy method
+
+      ○ Detailing this lifecycle
+
+        1 - Creates the app context (container)
+        2 - Scan the classes annotated with @Component, @Repository, etc
+        3 - Instantiates the beans
+        4 - Inject the dependencies between the beans
+        5 - Execute the internal life cycles (such as `BeanPostProcessor`, `@PostConstruct`, etc)
+        6 - Execute custom methods if defined, (like initMethod, @PostConstruct, or methods inside CommandLineRunner)
+
+      ○ Lifecycle methods / hooks
+
+        ■ We can add custom code during bean initialization
+          □ Calling custom business logic methods
+          □ Setting up handles to resources (db, sockets, file, etc)
+
+        ■ We can also add custom code during bean destruction
+          □ Calling custom business logic methods
+          □ Clean up handles to resources (db, sockets, files, etc)
+
+      ○ Init: method configuration
+
+        ```java
+
+          @Component
+          public class CricketCoach
+
+            code...
+
+            @PostConstruct
+            public void doMyStartupStuff() {
+              System.out.println("In doMyStartupStuff(): " + getClass().getSimpleName()); 
+            }
+        ```
+
+        ■ The key here is that we can enter anything to do after the bean has been constructed
+
+      ○ Destroy: method configuration
+
+        ```java
+
+          @Component
+          public class CricketCoach
+
+            code...
+
+            @PostConstruct
+            public void doMyStartupStuff() {
+              System.out.println("In doMyStartupStuff(): " + getClass().getSimpleName()); 
+            }
+
+            @PreDestroy
+            public void doMyCleanupStuff() {
+              System.out.println("In doMyCleanupStuff(): " + getClass().getSimpleName());
+            }
+        ```
+
+        ■ The key here is that we can enter any custom logic to do after it.
+
+    ○ Development Process
+
+      1. Define our methods for init and destroy
+      2. Add annotations: @PostConstruct and @PreDestroy
+
+  ## Lesson 25 - Bean lifecycle methods - Code
+
+    ● Code and explanations will be in IntelliJ
+
+    ● Comments
+      ○ @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) and @Scope("prototype") are basically the same thing, however, 
+      the first approach is more safe against typing errors and more used in bigger projects
+
+        
+
+        
+
+
+
+
+      
+
+
 
 
   ## Comments not related to lessons
@@ -1304,7 +1407,7 @@
         1 - Spring scans the components
           . It looks for classes annotated with @Component, @Service, @Repository, @Controller, @RestController, etc.
           . Instantiates these classes as `Beans`
-        2. For each class that needs to be instantiated, Spring:
+        1. For each class that needs to be instantiated, Spring:
           . Looks for the available constructors
           . If there is just one constructor, it uses that one automatically, even without @Autowired
           . If there is more than one constructor, it fetches the one with the @Autowired annotation to know which one to
