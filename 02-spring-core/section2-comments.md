@@ -1360,6 +1360,218 @@
       ○ @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) and @Scope("prototype") are basically the same thing, however, 
       the first approach is more safe against typing errors and more used in bigger projects
 
+  ## Lesson 26 - Java Config Bean - Overview
+
+    ● Configuring beans with java code
+
+      ○ This will introduce a new coach, such as a swim coach
+        ■ This implementation won't use any special annotation, such as the @Component annotation, and instead we are
+        going to configure this via Java code
+      
+      ○ Development process
+
+        ■ Create a @Configuration class 
+        ■ Define @Bean method to configure the bean
+        ■ Inject the bean into the controller
+
+      ○ Steps to create this java class
+
+        1 - Create a Java class and annotate as @Configuration
+
+          ```java
+
+            // imports and package
+
+            @Configuration
+            public class SportConfig {
+              ...
+            }
+
+          ```
+  
+            . The @Configuration annotation says that this is a configuration class for configuring Spring using our custom
+            approach
+
+        2 - Define a @Bean method to configure the bean
+
+          ```java
+
+            //package and imports
+
+            @Configuration
+            public class SportConfig {
+
+              @Bean
+              public Coach swimCoach() {
+                return new SwimCoach(); 
+              }
+            }
+
+          ```
+
+          . This new @Bean annotation returns an instance of SwimCoach, so we are manually constructing the object and 
+          returning it to the given caller
+          . The bean id defaults to the method name, meaning that the bean id is swimCoach
+
+        3 - Inject the bean into our controller
+
+          ```java
+
+            //package and imports
+
+            @RestController
+            public class DemoController {
+
+              private Coach myCoach
+
+              public DemoController(@Qualifier("swimCoach") Coach theCoach)
+                System.out.println("In constructor: " + getClass().getSimpleName());
+                myCoach = theCoach
+            }
+          ```
+        
+          . We can notice here that in the qualifier it injects the newly created bean id
+          . We use the default bean id based on the method name on that bean annotation
+
+      ○ Use case for @Bean
+
+        ■ We may wonder...
+          □ Using the "new" keyword... is that it? 
+          □ Why not just annotate the class with @Component?
+
+        ■ It can be used to make an existing third-party class available to Spring Framework
+          □ In these scenarios, we may not have access to the source code of third-party class
+          □ However, we would like to use the third-party class as a Spring Bean
+
+        ■ Therefore, we want to take a given data outside of a third-party class and make that class available as a Spring
+        Bean, in this is the main motivation for using the @Bean annotation
+
+      ○ Real world project example
+
+        ■ One project that the instructor worked on, made use of AWS to store documents
+          □ AWS has this feature called "Amazon Simple Storage Service (Amazon S3)
+            □ S# is a cloud-based storage system for storing PDF documents, images, etc
+
+        ■ He wanted to make use of the AWS S3 client as a Spring bean in the app
+          □ Therefore, to have the ability to communicate with the cloud on the code to store/retrieve documents
+        
+        ■ The AWS S3 client code is part of the AWS SDK
+          □ He could'nt modify the AWS SDK source code because it comes as a JAR file or Maven dependency
+          □ Can't simply add the component annotation to their code
+          □ However, we can configure it as a Spring bean using @Bean
+
+        ■ Configure AWS S3 Client using @Bean
+
+          □ For the Bean java class
+
+          ```java
+              // package and imports
+
+              @Configuration
+              public class DocumentsConfig {
+
+                @Bean
+                public S3Client remoteClient() {
+                  //Create an S3 client to connect to AWS S3
+                  ProfileCredentialProvider credentialProvider = ProfileCredentialProvider.create();
+                  Region region = S3Client.builder()
+                  S3Client s3client = S3Client.builder()
+                                      .region(region)
+                                      .credentialProvider(credentialProvider)
+                                      .build();
+
+                  return S3Client;
+                  
+                }
+
+              }
+          ```
+          
+          □ Component that uses this new bean
+
+            ```java
+              // package and imports
+
+              @Component
+              public class DocumentService {
+                private S3Client s3Client; 
+
+                public DocumentsService(S3Client theS3Client) {
+                  s3Client = theS3Client
+                }
+              }
+
+            ```
+
+          □ So basically, when our app starts, it scans the @Configuration class, runs the @Bean method remoteClient() and
+          registers its return value — an S3Client instance — in the SP as a bean named "remoteClient". Then, when it
+          creates the @Component `DocumentService`, it sees that the constructor needs an S3Client, searches the container
+          for a matching bean, finds the one created by remoteClient(), and automatically injects that same object into
+          `S3Client`
+
+      ■ Store our document in S3 using a service
+
+      ```java
+
+      // package and imports
+
+      @Component
+      public class DocumentService {
+
+        private S3Client s3Client; 
+
+        public DocumentService(S3Client theS3Client) {
+          s3client = theS3Client
+        }
+
+        public void processDocument(Document theDocument) {
+          // get the document input stream and file size...
+
+          //Store document in AWS3
+          //Create a put request for the object
+          PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                      .bucket(bucketName)
+                      .key(subDirectory + "/" + fileName)
+                      .ACL(ObjectCannedACL.BUCKET_OWNER_FULL_CONTROL).build();
+
+          // perform the pubObject operation to AWS s3... using our autowired bean
+          s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(fileInputStream, contentLength));
+        }
+
+      }
+      
+      ```
+
+      ○ Wrap Up
+
+        ■ We could use the Amazon S3 Client in our Spring application
+        ■ The Amazon S3 Client class was not originally annotated with @Component      
+        ■ However, we configured the S3 Client as a Spring Bean using @Bean
+        ■ It is now a Spring Bean and we can inject it into other services of our application
+
+        ■ Make an existing third-party class available to Spring framework
+
+  ## Lesson 27 - Java Config Bean - Code
+
+    ● Move to the intellij editor, do the usual housekeeping and implement what we have just explained
+
+
+
+
+
+
+        
+
+
+
+
+          
+
+
+
+      
+
+
         
 
         
@@ -1419,5 +1631,17 @@
 
         Based on the parameter type and using @Qualifier if needed
 
-    
+    ○ Prototype Beans and Destroy Lifecycle
+
+      ■ There is a subtle points we need to be aware of with "prototype"
+        □ For "prototype" scoped beans, Spring does not call the destroy method
+
+      ■ Component lifecycle of a prototype bean
+        □ In contrast to other scopes, Spring does not manage the complete lifecycle of a prototype bean.
+          . The container instantiates, configures, and otherwise assembles a prototype object , and hands it to the
+          client, with no further record of that prototype instance.
+          . Thus although initialization lifecycle callback methods are called on all objects regardless of the scope. In
+          the case of prototypes, configured destruction lifecycle callbacks are not called. The client code must clean
+          up the prototype-scoped objects and release expensive resources that the prototype bean(s) are holding.
+
 
