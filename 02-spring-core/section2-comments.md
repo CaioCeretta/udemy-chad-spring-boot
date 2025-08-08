@@ -1553,8 +1553,13 @@
 
   ## Lesson 27 - Java Config Bean - Code
 
-    ● Move to the intellij editor, do the usual housekeeping and implement what we have just explained
+    ● Move to the intellij editor, do the usual housekeeping and implement what we have just explained. Minimal comments
 
+      ○ Steps
+
+        ■ Create a new package com.luv2code.javaconfigbean.config
+        ■ Create a new class: SportConfig, annotate with @Configuration and define a @Bean method  
+        ■ We can also give a custom id such as @Bean("aquatic")
 
 
 
