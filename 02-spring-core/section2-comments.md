@@ -1557,7 +1557,7 @@
 
       ○ Steps
 
-        ■ Create a new package com.luv2code.javaconfigbean.config
+        ■ Create a new package com.originId.artifactName.config
         ■ Create a new class: SportConfig, annotate with @Configuration and define a @Bean method  
         ■ We can also give a custom id such as @Bean("aquatic")
 
