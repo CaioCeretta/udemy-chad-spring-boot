@@ -361,12 +361,28 @@
 
   ## Lesson 7 ~ 8 - Setting up Spring Boot project - Coding
 
-    ● Initial Steps
+    ● Code and comments are mostly going to be located in IntelliJ.
+
+    ● Code steps
 
       ○ First of all, we are going to the initializr website and utilize those dependencies of the mysql and jpa and
       generate it.       
 
-    ● Proceed to IntelliJ and comments will be located there.
+      ○ After generating, if we try to run the code runner, it will throw an error due to datasource misconfiguration
+      so in /src/resources/application.properties, set the url, username, and password of the db connection
+
+      ○ To prevent application to show the banner on every launch we can simply:
+        spring.main.banner-mode=off
+
+      ○ And to reduce logging level only to warnings and errors
+        logging.level.root=warn
+
+        ■ This is only being done because we are using a standalone application, in bigger applications, the logs depend
+          on application requirements
+
+
+
+      
       
 
 
