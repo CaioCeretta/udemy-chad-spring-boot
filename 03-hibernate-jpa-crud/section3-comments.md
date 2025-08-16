@@ -212,7 +212,7 @@
         ■ When the application uses the Hibernate/JDBC framework, the app will store/retrieve the objects using JPA API.
         ■ More will be covered later on
 
-  ### Lesson 3: Setting up development environment
+  ## Lesson 3: Setting up development environment
 
     ● MySQL Database Server
       ○ In this course, MySQL Database will be used
@@ -232,6 +232,141 @@
           □ Perform insert, updates and deletes on data
           □ Handle administrative functions such as creating users
           □ Others...
+
+  ## Lesson 4 & 5 - Setting up Database Table
+
+    ● No specific coding for these lessons
+
+  ## Lesson 6 - Setting up Spring Boot project
+
+    ● Automatic Data Source Configuration
+
+      ○ In Spring Boot, Hibernate is the default implementation of JPA
+      ○ *EntityManager* is main component for creating queries, etc...  
+      ○ *EntityManager* is from Jakarta Persistence API (JPA)
+
+      ○ Based on config, Spring Boot will automatically create the beans
+        ■ DataSource, EntityManager, ...
+      ○ We can then inject these into our app, for example our DAO
+
+    ● Setting up Project
+
+      ○ At Spring Initializr website, `start.spring.io`
+        ■ Add dependencies
+          □ MySQL Driver: mysql-connector-j
+          □ Spring Data JPA: spring-boot-starter-data-jpa
+
+      ○ Spring Boot - Auto Configuration
+
+        ■ Spring boot will _automatically configure_ our data source for us
+        ■ Based on entries from Maven pom file
+          □ JDBC Driver: mysql-connector-j
+          □ Spring Data (ORM): spring-boot-sta
+
+        ■ DB connection info from: application.properties file
+
+      ○ application.properties
+
+        host:port/database
+        spring.datasource.url=jdbc:mysql://localhost:3306/student_tracker
+        spring.datasource.username=springstudent
+        spring.datasource.password=springstudent
+
+        ■ One thing to be aware of is that there is no need to give JDBC driver class name, Spring Boot will automatically
+        detect it based on the datasource URL
+
+    ● Creating Spring Boot - Command Line App
+
+      ○ This will allow us to focus on Hibernate / JPA coding
+      ○ Later in the course, we will apply this to a CRUD REST API
+
+      ○ Code example
+
+        ```java
+        // imports
+
+        @SpringBootApplication
+        public class CrudDemoApplication {
+
+          // Default main method, args represent the command line commands passed when we start the program, therefore
+          // if we use something like `java -jar app.jar foo bar`, args[0] will be 'foo' and args[1] will be 'bar'
+          public static void main(String[] args) {
+            SpringApplication.run(CrudDemoApplication.class, args)
+          }
+
+          /* args are also arguments from the command line, but passed from SP to the CommandLineRunner, CommandLineRuner
+          is an interface SP executes after the application has already started.
+
+          This CommandLineRunner is from the Spring framework and is basically a hook which allow us to execute code after
+          the spring beans have been loaded into the application context
+          */ 
+
+          
+          @Bean
+          public CommandLineRunner commandLineRunner(String[] args) {
+            /* this code block is a lambda expression and this is where we can basically add our own custom code, at the
+            moment its simply printing a hello world but later on we will add some DAO code to interact with the db*/
+            return runner -> {
+              System.out.println("Hello World");
+            }
+          }
+
+        }
+        ```
+
+          . Here we are simply setting up the infrastructure, the framework
+
+    ● Command Line Runner and Lambda Code
+
+      ○ Lambda is simply a concise form of writing the implementation of a functional interface, without the need of
+      declaring a separate class.
+
+        ■ In java, a normal function need a name, to be within a class and may have multiple uses
+
+        ■ Lambda, in the oder hand, is a short expression which represent a piece of code to be executed (the implementation
+        of a single method of a functional interface)
+
+        ■ Lambda is pretty much like an arrow function used as a callback
+
+      ○ What is command line runner?
+
+        ■ In SP, this is a functional interface — i.e., it has one single abstract method (run(String... args)). e.g.
+
+        ```java
+          @FunctionalInterface
+          public interface CommandLineRunner {
+            void run(String... args) throws Exception;
+          }
+        ```
+
+        ■ This mean that we can implement this method
+
+          □ By creating a class which implements CommandLineRunner
+          □ Creating an anonymous class
+          □ Or using a lambda expression, which is shorter and more readable
+
+        ■ That same code without lambda would be something like
+
+        ```java
+                @Bean
+        public CommandLineRunner commandLineRunner(String[] args) {
+            return new CommandLineRunner() {
+                @Override
+                public void run(String... args) {
+                    System.out.println("Hello World");
+                }
+            };
+        }
+        ```
+
+
+
+        
+      
+
+
+
+
 
   
 
