@@ -253,8 +253,8 @@
 
       ○ At Spring Initializr website, `start.spring.io`
         ■ Add dependencies
-          □ MySQL Driver: mysql-connector-j
-          □ Spring Data JPA: spring-boot-starter-data-jpa
+          □ MySQL Driver
+          □ Spring Data JPA
 
       ○ Spring Boot - Auto Configuration
 
@@ -359,9 +359,14 @@
         }
         ```
 
+  ## Lesson 7 ~ 8 - Setting up Spring Boot project - Coding
 
+    ● Initial Steps
 
-        
+      ○ First of all, we are going to the initializr website and utilize those dependencies of the mysql and jpa and
+      generate it.       
+
+    ● Proceed to IntelliJ and comments will be located there.
       
 
 
