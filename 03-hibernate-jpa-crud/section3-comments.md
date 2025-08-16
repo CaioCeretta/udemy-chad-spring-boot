@@ -380,7 +380,145 @@
         ■ This is only being done because we are using a standalone application, in bigger applications, the logs depend
           on application requirements
 
+  ## Lesson 9 - JPA Dev Process - To Do List
 
+    ● Steps
+
+    1. Annotate Java Class
+    2. Develop Java Code to perform database operations
+   
+    ● Let's just say "JPA"
+
+      ○ As mentioned, Hibernate is the default JPA implementation in Spring Boot
+
+      ○ Going forward in this course, the instructor will simply use the term `JPA`
+        ■ Instead of saying "JPA Hibernate" 
+
+      ○ We know that by default, Hibernate is used behind the scenes.
+
+    ● Terminology
+
+      ○ Entity Class
+
+        ■ Java class that is mapped to a database table 
+
+        ■ At a minimum, the Entity Class
+          □ Must be annotated with @Entity
+          □ Must have a public or protected no-argument constructor
+            . The class can have other constructors
+
+      ○ ORM
+
+        ■ Java Class (with its attributes commonly in camelCase) talks to the JPA that talks to the database (same attributes
+        but with its attribute names in snake_case, e.g. firstName is equal to first_name)
+
+      ○ Constructors in Java - Refresher
+
+        ■ Remember about constructors in Java
+
+        ■ If you don't declare any constructors
+          □ Java will provide a no-argument constructor for free
+        
+        ■ If we declare constructors with arguments
+          □ Then we do not get one for free
+          □ In this case, we have to explicitly declare a no-argument constructor
+
+      ○ Java Annotations
+
+        ■ Step 1: Map class to database table
+
+          ```java
+            @Entity
+            @Table(name="student")
+            public class Student {
+              ...
+            }
+          ```
+          
+
+        ■ Step 2: Map fields to database columns
+
+          ```java
+                     
+            @Entity
+            @Table(name="student")
+            public class Student {
+              
+              @Id
+              @Column(name="id")
+              private int id;
+
+              @Column(name="first_name")
+              private String firstName;
+
+            }
+            
+          ```
+
+          □ Map these given fields to the appropriate database columns. This is done by making use of the @Column annotation.
+
+        ■ @Column - Optional
+
+          □ One thing to be aware of is that the @Column annotation is actually optional
+          □ If not specified, the column name is the same as the Java field
+
+          □ In general, this approach is not recommended, since if we refactor the Java code, then it will not match
+          existing database column
+          □ This is a breaking change and we will need to update database column
+          □ Same applies to @Table, database table name is same as the class
+
+        ■ Primary Key
+
+          □ Uniquely identifies each row in a table
+          □ Must be a unique value
+          □ Cannot contain NULL values
+
+      ○ Auto Increment
+
+        ■ MySQL: we can make use of auto increment with, e.g `id int NOT_NULL AUTO_INCREMENT`. in this
+        case we would need at the end of the table PRIMARY KEY (id), but it could also de before after the type
+        
+        ■ JPA Identity - Primary Key:
+
+          ```java
+            // class creation
+            @Id
+            @GeneratedValue(strategy=GenerationType.IDENTITY)
+            @Column(name="id")
+            private int id; 
+            // rest of class
+          ```
+
+          □ ID Generation Strategies
+
+            ▢ .AUTO: Pick an appropriate strategy for the particular database
+            ▢ .IDENTITY: Assign primary keys using database identity column
+            ▢ .SEQUENCE: Assign primary keys using a database sequence
+            ▢ .TABLE: Assign primary keys using an underlying database table to ensure uniqueness
+            ▢ .UUID: Assign primary keys using a globally unique identifier to ensure uniqueness
+
+            ▢ In general, IDENTITY is recommended and that should cover most of the use cases, unless the are some
+            really specific use cases
+
+      ● Bonus
+
+        ○ Our company and our project may require some specific requirement for generating the id and nothing provided
+        by JPA out-of-the-box matches this requirement
+
+          ■ We can define our CUSTOM generation strategy for our ID
+          ■ Create implementation of `org.hibernate.id.IdentifierGenerator`
+          ■ Override the method: public Serializable generate(...) and inside this generate method we provide our custom
+          business logic or corporate logic for generating a given ID.
+        
+
+
+
+
+
+
+        
+
+      
 
       
       
