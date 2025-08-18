@@ -384,8 +384,8 @@
 
     ● Steps
 
-    1. Annotate Java Class
-    2. Develop Java Code to perform database operations
+      1. Annotate Java Class
+      2. Develop Java Code to perform database operations
    
     ● Let's just say "JPA"
 
@@ -509,19 +509,154 @@
           ■ Create implementation of `org.hibernate.id.IdentifierGenerator`
           ■ Override the method: public Serializable generate(...) and inside this generate method we provide our custom
           business logic or corporate logic for generating a given ID.
+
+    ● Coding
+
+      some comments should be placed in intellij code
+
+      1. Open cruddemo application we just created inside intellij 
+      2. create new package entity under the artifact name package
+      3. inside entity, create a `Student` class
+      4. map the class to a database table, using the @Entity, @Table(name="student"), and @ColumnName annotations
+      5. define a no-argument constructor and also create a constructor that accepts argument
+
+      ○ Why sometimes we don't need to specify the `this` keyword when calling a parameter inside a class
+
+        ■ This question arose when creating getters in intellij, such as public String getEmail() { return email; }
+        ■ If email is a private attribute, why on the getter we didn't have to specify this.email ?
+
+        ■ In Java, and many OOP languages, the this keyword refers to the current object instance. But we don't always
+        need to write it explicitly, depending on the context
+          □ Why we don't need `this` in this case? 
+            ▢ the firstName, for instance, is a field class. Inside an instance method, Java automatically looks for
+            variables in this order: 
+              1. Local variables/parameters of the method
+              2. Fields of the current object (`this.field`)
+
+            Since there's no local variable called id inside the method. Java knows we mean the field of the class. So
+            writing return id; is a shorthand for `return this.id;` 
+
+        ■ When we must use `this`? 
+
+          □ We need `this` when there's ambiguity — for example, if a local variable or parameter has the same name as
+          the field, such as the case of a setter
+            ▢ private int id;
+              public void setId(int id) {
+                  this.id = id;  // left side = field, right side = parameter
+              }
+
+          □ without `this` java would think both `id` refer to the method parameter, which makes the assignment
+  
+  ## Lesson 10 ~ 11: Saving a Java Object with JPA - Overview
+
+    ● Sample App Features
+
+      ○ _Create_ a new Student
+      ○ _Read_ a Student
+      ○ _Update_ a Student
+      ○ _Delete_ a Student
+
+      ○ Which is basically a CRUD app
+
+    ● Student Data Access Object
+
+      ○ DAO is responsible for interfacing with the database
+      ○ This is a common design pattern
+      
+      ○ Cruddemo app <-> Student DAO <-> Database
+        
+        ■ Which is basically a multidirectional communication where the app talks with the Dao, who talks to db, and
+        vice versa
+
+        ■ This is kind of like a helper class for communicating with the database.
+
+      ○ The Data Access will have a number of methods, such as save, finders, update, delete, and others.
+
+      ○ It also needs a JPA entity manager, which is the main component for saving / retrieving entities, which the DAO
+      talks to, and it communicates with one or more steps until reaching the database
+
+    ● JPA Entity Manager
+
+      ○ Our JPA Entity Manager needs a Data Source
+      ○ The Data Source defines database connection info
+      ○ Entity Manager and Data Source are automatically created by `SP`
+        ■ Based on the file: application.properties (JDBC URL, user_id, password, etc)
+
+      ○ Student DAO <-> Entity Manager <-> Data Source <-> database
+        ■ We have our DAO, that is going to make use of an entity manager, which in turn make use of a given data source.
+        ■ And we'll actually inject the entity manger into our Student DAO
+
+      ○ But what about JpaRepository?
+      
+        ■ Some people may have already heard or read something about JpaRepository, and at this point of the course, we
+        may wonder: "Well, what about JpaRepository? Why are we not using it?"
+
+        ■ Spring Data JPA has JpaRepository interface
+
+          □ It provides JPA database access with minimal coding, but there were some questions made by other students
+          to the teacher asking about the JpaRepository in place of entityManager, so which one is better?
+
+            . The short answer to this question is: Yes, we will use JpaRepository in the course
+            . It will be covered later in the course
+            . In this course, the instructor wants to show various techniques for using JPA
+            . Knowing BOTH entityManager and JpaRepository will help us on future projects
+            . And developers who know both entityManager and JpaRepository can solve more issues and contribute more on
+            a team, different from who knows only one of these.
+
+        ■ In simple terms, when to use which? 
+
+          □ If we need low-level control and flexibility, use EntityManager
+          □ If we want high-level of abstraction, use JpaRepository
+
+        ■ Use Case
+
+          □ Entity Manager
+
+            . Need low-level control over the database operations and want to write custom queries
+            . Provides low-level access to JPA and work directly with JPA entities
+            . Complex queries that require advanced features such as native SQL queries or stored procedure calls.
+            . When we have custom requirements that are not easily handled by higher-level abstractions.
+
+          □ JpaRepository
+
+            . Provides commonly used CRUD operations out of the box, reducing the amount of code we need to write
+            . Additional features such as pagination, sorting
+            . Generate queries based on Java method names
+            . Can also create custom queries using @Query
+
+          □ Instructor Recommendation
+
+            . Choice depends on the application requirements and developer preference
+            . We can use both in the same project 
+
+            . For learning purposes, it is recommended learning EntityManager first then learn JpaRepository
+            . This will help us understand the low-level coding behind the scenes and then we can use JpaRepository for
+            some of the more additional features there.
+            . Knowing BOTH EntityManager and JpaRepository will help us on future projects
+
+      
+
+
+
+
+
+
+
+
+
+
         
 
 
 
 
 
-
         
 
       
 
       
-      
+       
 
 
 
