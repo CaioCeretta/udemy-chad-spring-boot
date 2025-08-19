@@ -750,6 +750,24 @@
           ■ @Repository is an specialized annotation for repositories and DAOs, it gives us support to component scanning
           and also translating JDBC exceptions
           
+  ## Lesson 12 ~ 13: Saving a Java Object with JPA - Coding
+
+    ● For this lesson, we will also use the same crud demo application
+
+    ● Coding steps
+
+      ○ Step 1 - Define DAO Interface
+        ■ Create new package under thr artifact name called dao and create a StudentDAO interface
+          □ define a save method
+
+      ○ Define DAO implementation
+        ■ Define a StudentDAOImpl in the same package as the Dao
+          □ Override the save method from the interface 
+          □ Use a @Transaction annotation in the save method since it performs an update to the database
+          □ Define field for entity manager
+          □ Inject entity manager using constructor injection
+
+
 
            
 
