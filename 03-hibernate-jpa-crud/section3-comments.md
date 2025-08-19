@@ -549,90 +549,220 @@
   
   ## Lesson 10 ~ 11: Saving a Java Object with JPA - Overview
 
-    ● Sample App Features
+    ### Part 1
 
-      ○ _Create_ a new Student
-      ○ _Read_ a Student
-      ○ _Update_ a Student
-      ○ _Delete_ a Student
+      ● Sample App Features
 
-      ○ Which is basically a CRUD app
+        ○ _Create_ a new Student
+        ○ _Read_ a Student
+        ○ _Update_ a Student
+        ○ _Delete_ a Student
 
-    ● Student Data Access Object
+        ○ Which is basically a CRUD app
 
-      ○ DAO is responsible for interfacing with the database
-      ○ This is a common design pattern
-      
-      ○ Cruddemo app <-> Student DAO <-> Database
+      ● Student Data Access Object
+
+        ○ DAO is responsible for interfacing with the database
+        ○ This is a common design pattern
         
-        ■ Which is basically a multidirectional communication where the app talks with the Dao, who talks to db, and
-        vice versa
+        ○ Cruddemo app <-> Student DAO <-> Database
+          
+          ■ Which is basically a multidirectional communication where the app talks with the Dao, who talks to db, and
+          vice versa
 
-        ■ This is kind of like a helper class for communicating with the database.
+          ■ This is kind of like a helper class for communicating with the database.
 
-      ○ The Data Access will have a number of methods, such as save, finders, update, delete, and others.
+        ○ The Data Access will have a number of methods, such as save, finders, update, delete, and others.
 
-      ○ It also needs a JPA entity manager, which is the main component for saving / retrieving entities, which the DAO
-      talks to, and it communicates with one or more steps until reaching the database
+        ○ It also needs a JPA entity manager, which is the main component for saving / retrieving entities, which the DAO
+        talks to, and it communicates with one or more steps until reaching the database
 
-    ● JPA Entity Manager
+      ● JPA Entity Manager
 
-      ○ Our JPA Entity Manager needs a Data Source
-      ○ The Data Source defines database connection info
-      ○ Entity Manager and Data Source are automatically created by `SP`
-        ■ Based on the file: application.properties (JDBC URL, user_id, password, etc)
+        ○ Our JPA Entity Manager needs a Data Source
+        ○ The Data Source defines database connection info
+        ○ Entity Manager and Data Source are automatically created by `SP`
+          ■ Based on the file: application.properties (JDBC URL, user_id, password, etc)
 
-      ○ Student DAO <-> Entity Manager <-> Data Source <-> database
-        ■ We have our DAO, that is going to make use of an entity manager, which in turn make use of a given data source.
-        ■ And we'll actually inject the entity manger into our Student DAO
+        ○ Student DAO <-> Entity Manager <-> Data Source <-> database
+          ■ We have our DAO, that is going to make use of an entity manager, which in turn make use of a given data source.
+          ■ And we'll actually inject the entity manger into our Student DAO
 
-      ○ But what about JpaRepository?
-      
-        ■ Some people may have already heard or read something about JpaRepository, and at this point of the course, we
-        may wonder: "Well, what about JpaRepository? Why are we not using it?"
+        ○ But what about JpaRepository?
+        
+          ■ Some people may have already heard or read something about JpaRepository, and at this point of the course, we
+          may wonder: "Well, what about JpaRepository? Why are we not using it?"
 
-        ■ Spring Data JPA has JpaRepository interface
+          ■ Spring Data JPA has JpaRepository interface
 
-          □ It provides JPA database access with minimal coding, but there were some questions made by other students
-          to the teacher asking about the JpaRepository in place of entityManager, so which one is better?
+            □ It provides JPA database access with minimal coding, but there were some questions made by other students
+            to the teacher asking about the JpaRepository in place of entityManager, so which one is better?
 
-            . The short answer to this question is: Yes, we will use JpaRepository in the course
-            . It will be covered later in the course
-            . In this course, the instructor wants to show various techniques for using JPA
-            . Knowing BOTH entityManager and JpaRepository will help us on future projects
-            . And developers who know both entityManager and JpaRepository can solve more issues and contribute more on
-            a team, different from who knows only one of these.
+              . The short answer to this question is: Yes, we will use JpaRepository in the course
+              . It will be covered later in the course
+              . In this course, the instructor wants to show various techniques for using JPA
+              . Knowing BOTH entityManager and JpaRepository will help us on future projects
+              . And developers who know both entityManager and JpaRepository can solve more issues and contribute more on
+              a team, different from who knows only one of these.
 
-        ■ In simple terms, when to use which? 
+          ■ In simple terms, when to use which? 
 
-          □ If we need low-level control and flexibility, use EntityManager
-          □ If we want high-level of abstraction, use JpaRepository
+            □ If we need low-level control and flexibility, use EntityManager
+            □ If we want high-level of abstraction, use JpaRepository
 
-        ■ Use Case
+          ■ Use Case
 
-          □ Entity Manager
+            □ Entity Manager
 
-            . Need low-level control over the database operations and want to write custom queries
-            . Provides low-level access to JPA and work directly with JPA entities
-            . Complex queries that require advanced features such as native SQL queries or stored procedure calls.
-            . When we have custom requirements that are not easily handled by higher-level abstractions.
+              . Need low-level control over the database operations and want to write custom queries
+              . Provides low-level access to JPA and work directly with JPA entities
+              . Complex queries that require advanced features such as native SQL queries or stored procedure calls.
+              . When we have custom requirements that are not easily handled by higher-level abstractions.
 
-          □ JpaRepository
+            □ JpaRepository
 
-            . Provides commonly used CRUD operations out of the box, reducing the amount of code we need to write
-            . Additional features such as pagination, sorting
-            . Generate queries based on Java method names
-            . Can also create custom queries using @Query
+              . Provides commonly used CRUD operations out of the box, reducing the amount of code we need to write
+              . Additional features such as pagination, sorting
+              . Generate queries based on Java method names
+              . Can also create custom queries using @Query
 
-          □ Instructor Recommendation
+            □ Instructor Recommendation
 
-            . Choice depends on the application requirements and developer preference
-            . We can use both in the same project 
+              . Choice depends on the application requirements and developer preference
+              . We can use both in the same project 
 
-            . For learning purposes, it is recommended learning EntityManager first then learn JpaRepository
-            . This will help us understand the low-level coding behind the scenes and then we can use JpaRepository for
-            some of the more additional features there.
-            . Knowing BOTH EntityManager and JpaRepository will help us on future projects
+              . For learning purposes, it is recommended learning EntityManager first then learn JpaRepository
+              . This will help us understand the low-level coding behind the scenes and then we can use JpaRepository for
+              some of the more additional features there.
+              . Knowing BOTH EntityManager and JpaRepository will help us on future projects
+
+    ### Part 2
+
+      ● Development Process for Student DAO
+
+        ○ Step 1: Define DAO interface
+
+          ■ Define a save method such as
+
+            ```java
+              public interface StudentDAO {
+                void save(Student theStudent)
+              }
+            ```
+
+          ■ This Student class is an entity mapped to a given database table
+
+        ○ Step 2: Define DAO implementation
+
+          ■  Define the implementation class, like
+
+            ```java
+              public interface StudentDAOImpl implements StudentDAO {
+                  private EntityManager entityManager;
+
+                  public StudentDAOImpl(EntityManager theEntityManager) {
+                    entityManager = theEntityManager
+                  }
+
+                  @Override
+                  @Transactional
+                  public void save(Student theStudent) {
+                    entityManager.persist(theStudent)
+                  }
+              }
+            ```
+          
+            □ We use the implementation to inject the entity manager into our DAO and we make the assignment accordingly
+            within the constructor
+
+            □ The implementation for the save method use the JPA entity manager to actually save this java object, which
+            is accomplished by saying `entityManager.persist(theStudent)`
+
+            □  By adding the @Transactional annotation to this method, it will handle the transaction management
+
+
+
+        ○ Step 3: Update main app
+
+          ■ Code will be explicit on the intellij code, here we will cover the basics
+
+            ```java
+
+              private void createStudent(StudentDAO studentDAO) {
+
+                // create the student object
+                Student tempStudent = new Student("Caio", "Ceretta", "caioceretta@gmail.com")
+
+                // save the object
+                studentDAO.save(tempStudent)
+
+
+              }
+            ``` 
+
+        ○ DAO
+
+          Student DAO <-> Entity Manager <-> Data Source <-> DB
+
+        ○ Spring @Transactional
+
+          ■ Spring provides an @Transactional annotation
+
+          ■ Automagically begin and end a transaction for our JPA code
+            □ No need for us to explicitly do this in our code
+
+          ■ This Spring magic happens behind the scenes
+
+        ○ Specialized Annotation for DAOs
+
+          ■ Spring provides the @Repository annotation that is basically a "sub" annotation of @Component
+
+          ■ @RestController, @Repository, and others, all point to the @Component annotation
+
+          ■ This annotation is applied to DAO implementations and Spring will automatically register the DAO implementation
+            □ Thanks to component-scanning
+
+          ■ Spring also provides translation of any JDBC related exceptions, and by translation i mean that if we have
+          any checked JDBC exceptions and then Spring translates them to unchecked exceptions and it make the coding
+          easier for interfacing with a given database
+
+        ○ Updated Version of DAO implementation
+
+          ```java
+              // imports
+
+              @Repository
+              public interface StudentDAOImpl implements StudentDAO {
+                  private EntityManager entityManager;
+
+                  public StudentDAOImpl(EntityManager theEntityManager) {
+                    entityManager = theEntityManager
+                  }
+
+                  @Override
+                  @Transactional
+                  public void save(Student theStudent) {
+                    entityManager.persist(theStudent)
+                  }
+              }
+          ```
+          
+          ■ @Repository is an specialized annotation for repositories and DAOs, it gives us support to component scanning
+          and also translating JDBC exceptions
+          
+
+           
+
+
+
+
+
+
+
+
+
+
+
 
       
 
