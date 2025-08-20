@@ -777,6 +777,11 @@
         ■ Implement this createStudent method to persist a student object
           □ We can see that we are making use of the StudentDAO to communicate with the database, which is our helper/dependency.
 
+  ## Lesson 14: Primary Keys
+
+    ● In IntelliJ, alter the save method to save multiple students
+      ○ After executing and refreshing the database we are able to see how mysql handles the auto increment of the id column
+
 
 
 
