@@ -762,10 +762,21 @@
 
       ○ Define DAO implementation
         ■ Define a StudentDAOImpl in the same package as the Dao
+          □ Type this as a @Repository for jean to know which bean of the StudentDAO type to inject
           □ Override the save method from the interface 
           □ Use a @Transaction annotation in the save method since it performs an update to the database
           □ Define field for entity manager
           □ Inject entity manager using constructor injection
+
+      ○ Update main app
+
+        ■ On the Command line runner constructor, inject the StudentDAO
+        ■ Call the createStudent method with the studentDao just injected
+        ■ Since createStudent method does not exist, but the IDE understands its purposes, use the generate method and let
+        the IDE to create this createStudent method which receives the student as property
+        ■ Implement this createStudent method to persist a student object
+          □ We can see that we are making use of the StudentDAO to communicate with the database, which is our helper/dependency.
+
 
 
 
