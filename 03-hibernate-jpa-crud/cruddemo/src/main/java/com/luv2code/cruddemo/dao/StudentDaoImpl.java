@@ -4,7 +4,10 @@ import com.luv2code.cruddemo.entity.Student;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class StudentDaoImpl implements StudentDAO{
 
     // define field for entity manager
