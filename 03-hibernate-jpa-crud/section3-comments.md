@@ -777,47 +777,19 @@
         ■ Implement this createStudent method to persist a student object
           □ We can see that we are making use of the StudentDAO to communicate with the database, which is our helper/dependency.
 
-  ## Lesson 14: Primary Keys
+  ## Lesson 14 ~ 15: Primary Keys
 
     ● In IntelliJ, alter the save method to save multiple students
       ○ After executing and refreshing the database we are able to see how mysql handles the auto increment of the id column
 
+    ● How do we change the AUTO_INCREMENT values? 
+      ○ For example, if i don't want to start the auto increment at number 1, i'd like to start it in a different number,
+      like 1000, 5000... How can i do that? 
+        ■ e.g. ALTER TABLE student_tracker.student AUTO_INCREMENT=3000
 
+      ○ How do i reset the AUTO_INCREMENT value back to 1
+        ■ e.g. TRUNCATE student_tracker.student, this will reset the database and reset the index to 1
 
-
-           
-
-
-
-
-
-
-
-
-
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-        
-
-      
 
       
        
