@@ -941,3 +941,47 @@
       ○  2 - Add new method to DAO implementation and implement it public Student findById(Integer id) return
       entityManager.find(Student.class, id)
       ○  3 - Update main app
+
+  ## Lesson 18 - Querying Objects with JPA - Overview
+
+    ● JPA Query Language (JPQL)
+
+      ○ Query language for retrieving objects
+
+      ○ Similar in concept to SQL
+        . where, like, order by, join, in, etc
+
+      ○ However, JPQL is based on `entity name` and `entity fields`
+
+      ○ Retrieving all Students
+
+        ```java
+          TypedQuery<Student> theQuery = entityManager.createQuery("FROM Student", Student.class);
+
+          List<Student> students = theQuery.getResultsList();
+        ```
+
+        ■ Note: This is NOT the name of the database table (FROM Student), which mean that JPQL uses the name of the java
+        entity
+          □ All JPQL syntax is based on entity name and entity fields
+
+      ○ Retrieving Students: lastName = 'Doe'
+
+        ```java
+          TypedQuery<Student> theQuery =  entityManager.createQuery(
+                                                "FROM Student WHERE lastName=´Doe´", Student.class);
+        
+          List<Student> students = theQuery.getResultList();
+
+        ```
+
+        ■ lastName is the JPA name, the property from the @Column() annotation:
+          □ @Column(name = "last_name")
+          private String lastName < this one
+
+      ○ Retrieving Students using OR predicate
+
+        ```java
+           TypedQuery<Student> theQuery =  entityManager.createQuery(
+                                                "FROM Student WHERE lastName=´Doe´ OR firstName=´Daffy´", Student.class);
+        ```
