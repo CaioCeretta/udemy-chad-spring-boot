@@ -941,6 +941,3 @@
       ○  2 - Add new method to DAO implementation and implement it public Student findById(Integer id) return
       entityManager.find(Student.class, id)
       ○  3 - Update main app
-      ○  
-      ○
-      ○
