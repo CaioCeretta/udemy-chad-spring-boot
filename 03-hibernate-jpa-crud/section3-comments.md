@@ -790,17 +790,157 @@
       ○ How do i reset the AUTO_INCREMENT value back to 1
         ■ e.g. TRUNCATE student_tracker.student, this will reset the database and reset the index to 1
 
+  ## Lesson 16: Reading Objects with JPA - Overview
 
+    ● Retrieving a Java Object with JPA
+
+      ○ Retrieve/read a student from the database using the primary key of 1
+
+        ```java
+          Student myStudent = entityManager.find(Student.class, 1)
+        ```
+
+        ■ First parameter is the entity class, and the second one is the primary key
       
-       
+      ○ The example above is for the path where it finds a Student with that id, but if it doesn't find any, it returns
+      null
+    
+    ● Development Process
 
+      ○ 1. Add new method to DAO interface
 
+        ```java
+          // imports
 
+          public interface StudentDAO {
+            Student findById(Integer id);
+          }
+        ```
 
+      2. Add a new method to DAO implementation
 
+        ```java
+          // imports
+
+          public class StudentDAOImpl implements StudentDAO {
+            private EntityManager entityManager/
+            ...
+
+            @Override
+            public Student findById(Integer id) {
+              return entityManager.find(Student.class, id)
+            }
+          }
+        ```
+
+          ■ Again, if it is not found, it returns null
+          ■ We don't need to make use of the @Transaction annotation since we are only doing a query, not doing any
+          updates or modifications to the db, it is simply read only
+
+      3. Update main app
+
+        ```java
+          // imports
+
+          @SpringBootApplication
+          public class CruddemoApplication {
   
+            @Bean
+            public CommandLineRunner(StudentDao studentDAO) {
+              return runner -> {
+                readStudent(studentDAO)
+              }
+            };
+          }
+        ``` 
+
+        and the code that will be created
 
 
+        ```java
+          // imports
+
+        private void readStudent(StudentDAO studentDAO) {
+          // create the student object
+          System.out.println("Creating new student object");
+          Student tmpStudent = new Student("Caio", "Ceretta", "caioceretta@gmail.com");
+
+          // save the student object
+          System.out.println("Saving the student object...");
+          studentDAO.save(tmpStudent);
+
+          // display id
+          System.out.println("Saved student. Generated id: " + tmpStudent.getId());
+
+          // Retrieve student based on the id: primary key
+            System.out.println("\nRetrieving student with id: " + tmpStudent.getId())
+
+          Student myStudent = studentDAO.findById(tmpStudent.getId())
+
+          System.out.println("Found the student, " + myStudent)
+      }
+          
+        ``` 
+
+      . Since we have the id of the student, we can retrieve him based on that id and display then
 
 
+    ● CommandRunner Recap
 
+      ○  In this example
+
+        ```java
+          @Bean
+            public CommandLineRunner(StudentDao studentDAO) {
+              return runner -> {
+                readStudent(studentDAO);
+              };
+            }
+        ```
+
+      runner is simply the parameter of the lambda function that CommandLineRunner exposes
+
+
+      ○  CommandLineRunner is a Spring's functional interface
+
+        □ It defines only one method
+
+          void run(String ...args) throws Exception;
+        
+        □ This means that, whenever we create a CommandLineRunner, we are creating something that will be executed as
+        soon as the app launches
+
+        □ Which in this case, simply calls the readStudent method
+
+        □ runner is only the name of the parameter that represent the arguments (String... args) that Spring passes when
+        it initiates.
+
+        □ It could also be written as
+
+          . return args -> {
+            readStudent(studentDAO)
+          }
+
+          . and it would have the same effect. `runner` is not a Spring's special variable — it is just the name we
+          passed as the lambda's parameter         
+
+      ○ In summary
+
+        ■ CommandLineRunner runs after the Spring Boot is initialized
+        ■ The parameter (runner, args, ou whatever name we choose) contains the arguments passed in the command line
+        (String... args)
+        ■ Inside the lambda's body we define what we want to execute on initialization (in this case, call readStudent)
+
+  ## Lesson 17: Reading Objects with JPA - Coding
+
+    ● For this lesson, we will use the same code as before
+
+    ● Steps
+
+      ○  1 - Add findId method to the DAO
+      ○  2 - Add new method to DAO implementation and implement it public Student findById(Integer id) return
+      entityManager.find(Student.class, id)
+      ○  3 - Update main app
+      ○  
+      ○
+      ○
