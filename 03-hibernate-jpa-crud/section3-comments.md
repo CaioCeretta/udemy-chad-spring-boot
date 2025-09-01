@@ -984,4 +984,74 @@
         ```java
            TypedQuery<Student> theQuery =  entityManager.createQuery(
                                                 "FROM Student WHERE lastName=´Doe´ OR firstName=´Daffy´", Student.class);
+
+            List<Student> students = theQuery.getResultList();
+
         ```
+
+      ○ Retrieving Students Using LIKE predicate
+
+        ```java
+           TypedQuery<Student> theQuery =  entityManager.createQuery(
+                                                "FROM Student WHERE ´email´ LIKE ´%luv2code.com", Student.class);
+
+            List<Student> students = theQuery.getResultList();
+        ```
+
+    ● JPQL - Named Parameters
+
+      ○ In the previous examples, we hard-coded some of the data like, lastName = 'Doe' or email LIKE luv2code. However,
+      we may want to use this as a parameter. A user may write something as Doe for a lastName form field and we may want
+      to use it as a parameter, since we may want to read that information and search for the users name accordingly.
+
+      ○ With JPQL we can make use of named parameters.
+
+        ■ Example        
+  ```java
+            public List<Student> findByLastName(String theLastName) { 
+              TypedQuery<Student> theQuery =  entityManager.createQuery(
+                                                  "FROM Student WHERE lastName=:theData", Student.class);
+                                                  
+              theQuery.setParameter("theData", theLastName);
+
+              return theQuery.getResultList();
+            }
+  ```
+
+          □ In this example above, we defined a findByLastName which receives as parameter theLastName. We can now set
+          a :theData name, prefixed by colons, which will show Java that it is a placeholder to be set later on.
+            After creating the query, we are calling that constant we assigned the query to with .setParameter and set as
+            parameter for `theData`, the argument received to be its value
+
+    ● JPQL - select clause
+
+      ○ The query examples so far did not specify a "select" clause 
+
+      ○ That's because the Hibernate implementation is lenient and allows Hibernate Query Language (HQL)
+
+      ○ For strict JPQL, the "select" clause is required
+        ■ Example n. 1: 
+
+        ```java
+            TypedQuery<Student> theQuery = entityManager.createQuery(
+                      "select s from Student s WHERE s.email LIKE ´%luv2code.com", Student.class)
+        ```
+
+          □ To follow JPQL standards strictly, we have to write our query such as /\
+
+            . Where s is an "identification variable" / alias
+              - Provides a reference to the Student entity object being returned
+            . s - Can be any name
+              - Useful for when we have complex queries 
+
+        ■ Other examples, for strict JPQL
+
+        ```java
+          TypedQuery<Student> theQuery =
+              entityManager.createQuery("select s from Student s WHERE s.lastName=':theData'", Student.class)
+        ```
+
+          □ Here, s is a reference to the Student entity 
+          □ lastName is an actual field of the Java class
+
+  ## Lesson 19 ~ 20 - Querying Objects with JPA - Overview0
