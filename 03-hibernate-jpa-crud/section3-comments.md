@@ -1054,4 +1054,22 @@
           □ Here, s is a reference to the Student entity 
           □ lastName is an actual field of the Java class
 
-  ## Lesson 19 ~ 20 - Querying Objects with JPA - Overview0
+  ## Lesson 19 ~ 20 - Querying Objects with JPA - Coding
+
+    ● For this lesson, we will use the same code as before
+
+    ● Code steps - Lesson 1
+
+
+      ○ Step 1 - Go to the StudentDao and implement the new findAll() method to the DAO
+      ○ Step 2 - Create it in the StudentDao implementation
+      ○ Step 3 - Update main app to use this 
+        ■ Inside the main app, create a method named queryForStudents(studentDAO); which will call the new DAO findAll()
+        method
+      
+    ● Code steps - Lesson 2
+
+      ○ Finding a student by their last name
+
+        ■ Step 1 - Add the findLastName method to the Dao interface, this method will receive a theLastName parameter
+        ■ Step 2 - Inside the implementation, implement this findLastName method using JPQL variables
