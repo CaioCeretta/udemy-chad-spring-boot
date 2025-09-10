@@ -14,7 +14,7 @@ import java.util.List;
 public class StudentDaoImpl implements StudentDAO {
 
     // define field for entity manager
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     // inject entity manager using constructor injection
     public StudentDaoImpl(EntityManager entityManager) {
@@ -22,7 +22,7 @@ public class StudentDaoImpl implements StudentDAO {
     }
 
 
-    // implement save method
+    // implement save methodi
 
     @Override
     @Transactional
@@ -57,5 +57,11 @@ public class StudentDaoImpl implements StudentDAO {
         return theQuery.getResultList();
     }
 
-
+    @Override
+    @Transactional
+    public void update(Student theStudent) {
+        // Update the student
+        entityManager.merge(theStudent);
+    }
 }
+
