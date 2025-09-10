@@ -1073,3 +1073,116 @@
 
         ■ Step 1 - Add the findLastName method to the Dao interface, this method will receive a theLastName parameter
         ■ Step 2 - Inside the implementation, implement this findLastName method using JPQL variables
+
+## Lesson 21: Updating Objects with JPA - Overview
+
+  ● Update (U in CRUD)
+
+    ○ Example code would be:
+
+      ```java
+
+        Student student = entityManager.find(Student.class, 1);
+
+        // change first name to "Scooby"
+        theStudent.setFirstName("Scooby")
+
+        // update the entity
+        entityManager.merge(theStudent)
+      
+      ```
+
+      ■ In this we are simply finding the entity with entityManager.find. And calling a setter method in this object to
+      change its value and perform a entityManager.merge, which tells the entity manager to update this given object or
+      update the entity.
+    
+    ○ Update last name for all students
+
+      ```java
+        int numRowsUpdated = entityManager.createQuery(
+                                  "UPDATE Student SET lastName=´Tester´")
+                                  .executeUpdate()
+      ```
+
+      ■ Here we are updating the lastName for all students by making use of the entityManager.createQuery, we perform an
+      update student lastName equal to "Tester".
+      ■ Remember, Student is the name of the JPA entity class name and lastName is the field of the JPA entity.
+      ■ We finish the createQuery command with a `executeUpdate()` to execute the statement
+      
+      ■ This will return the numbers of rows that were updated and assign it to toe the variable
+
+    ○ Development Process to add this in our DAO
+
+      1. Add new method to DAO interface
+  
+        ```java
+          // import ...
+
+          public interface StudentDAO {
+            void update(Student theStudent);
+          }
+        ```
+
+      2. Add new method to DAO implementation
+
+        ```java
+          // import ...
+
+          public interface StudentDAOImpl implements StudentDAO {
+
+            private EntityManager entityManager;
+
+            @Override
+            @Transactional
+            public void update(Student theStudent) {
+              entityManager.merge(theStudent);
+            }
+          }
+        ```
+
+        - Since we are are updating the database, and not just querying, there was no need for this annotation, but here
+        we are performing an update 
+
+      3. Update main app
+      
+        ```java
+          // import ...
+
+          @SpringBootApplication
+          public class CruddemoApplication {
+            ...
+
+            @Bean
+            public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
+              return runner -> {
+                updateStudent(studentDAO)
+              }
+            }
+
+            private void updateStudent(StudentDAO studentDAO) {
+
+              //retrieve student based on the id: primary key
+              int studentId = 1
+              System.out.println("Getting student with id: " + studentId);
+
+              Student myStudent = studentDAO.findById(studentId);
+
+              System.out.println("Updating Student...")
+
+              //change first name to Scooby
+              myStudent.setFirstName("Scooby");
+              studentDAO.update(myStudent); 
+
+              //display updated student
+              System.out.println("Updated student: " + myStudent)
+
+            }
+
+            ...
+          }
+        ```
+
+## Lesson 22: Updating Objects with JPA - Coding
+
+  ● For this lesson, we will continue our cruddemo app and apply to it what we just saw
+ 
