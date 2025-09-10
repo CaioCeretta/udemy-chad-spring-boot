@@ -1185,4 +1185,220 @@
 ## Lesson 22: Updating Objects with JPA - Coding
 
   ● For this lesson, we will continue our cruddemo app and apply to it what we just saw
- 
+
+## Lesson 23: Deleting Objects with JPA - Overview
+
+    ● Delete (D in CRUD): 
+
+      ○ Simple Delete Example:
+
+        ```java
+
+          // retrieve the student
+          int id = 2;
+          Student theStudent = entityManager.find(Student.class, id);
+
+          // delete the student
+          entityManager.remove(theStudent);
+        ```
+
+          ■ Here we are simply finding the object via entityManager, assigning it to the student, and calling the remove
+          method from entityManager with the existing object, which deletes the student from the database
+
+      ○ Delete based in a condition:
+
+        ```java
+          
+          int numRowsDeleted = entityManager.createQuery(
+                        "DELETE FROM Student WHERE lastName=´Smith´")
+                        .executeUpdate();
+        
+        ```
+
+      ○ executeUpdate()
+
+        ■ We may think, if we are executing a delete, why the command to run the query is to executeUpdate?
+
+          □ In the API, the update method is simply a generic term, so it means that we are simply modifying the database
+
+      ○ Delete all students
+
+        ```java
+          
+          int numRowsDeleted = entityManager.createQuery(
+                        "DELETE FROM Student ")
+                        .executeUpdate();
+        
+        ```
+
+        it will return the number of rows deleted
+
+      ○ Development Process
+
+        1. Add a new method to DAO interface
+
+          ```java
+            // ...
+              void delete(Integer id);
+            // ...
+          ``` 
+
+        2. Add new method to DAO implementation
+
+          ```java
+            // ...
+              @Override
+              @Transactional
+              public void delete(Integer id) {
+                Student theStudent = entityManager.find(Student.class, id);
+                entityManager.remove(theStudent)
+              }
+            // ...
+          ```
+
+        3. Update main app
+
+          ```java
+            // ...
+            // public Command Line Runner block
+            {
+              deleteStudent(studentDAO)
+            }
+
+            private void deleteStudent(StudentDAO studentDAO) {
+              // delete student
+              int studentId = 3;
+              System.out.println("Deleting student id: " + studentId);
+              
+              studentDAO.delete(studentId)
+            }
+
+            // ...
+          ``` 
+
+## Lesson 23: Deleting Objects with JPA - Coding 1
+
+  ● For this lesson, we will continue our cruddemo app and apply to it what we just saw
+
+## Lesson 24: Deleting Objects with JPA - Coding 2
+
+  ● In this lesson, in the intellij, we're going to play with the other mentioned types of deletion
+
+    ○   int numRowsDeleted = entityManager.createQuery(
+              "DELETE FROM Student WHERE lastName=´Smith´")
+              .executeUpdate();
+
+        return numRowsDeleted
+
+      ■ This method may look ok, but intellij suggested that numRowsDeleted is redundant, so we simply returned:
+
+        return entityManager.createQuery("Delete FROM Student").executeUpdate();
+
+## Lesson 25: Create Database Tables from Java Code
+
+  ● Previously, we created database tables by running a SQL script... But there's another option
+
+    ○ JPA/Hibernate provides an option to 'automagically' create database tables
+
+      ■ Create tables based on Java code with JPA / Hibernate annotations
+
+      ■ Which is useful for development and testing
+
+        Java Code -> JPA / Hibernate -> SQL -> Database
+
+        . Meaning that there is no need for us to write any of SQL, it will generate and apply it "on the fly".
+      
+    ○ Configuration
+
+      ■ In Spring Boot configuration file: application.properties, we are going to give this property
+
+        □ spring,jpa.hibernate.dll-auto=create
+
+        □ When we run our application, hibernate will drop the tables and create them again from scratch, and this is 
+        all based on the JPA/Hibernate annotations that are in our java code
+
+      ■ Java Code: 
+
+        ```java
+
+          @Entity 
+          @Table(name="student")
+          public class Student {
+          
+            @Id
+            @GeneratedValue(strategy = GenerationType.IDENTITY)
+            @Column(name = "id")
+            private int id;
+
+            @Column(name = "first_name")
+            private String firstName;
+
+            @Column(name = "last_name")
+            private String lastName;
+
+            @Column(name = "email")
+            private String email;
+
+            // constructors, getters / setters 
+          }
+        ```
+
+        □ This will create a table student, with the given column names, and hibernate will use this information to
+        generate the SQL and execute it on the given database.
+    
+      ■ spring.jpa.hibernate.ddl-auto=PROPERTY-VALUE options
+
+        . none -> no action will be performed
+        . create -> Database tables are dropped followed by database tables creation (all data is lost)
+        . create-drop -> Drops the databases tables and recreate on start up. On application shutdown, drop the databases,
+                        so there will be nothing on the application, this is primarily used for unit testing
+        . validate -> Validate the database tables schema
+        . update -> Update the database tables schema
+    
+  ● Basic Projects
+      
+    ○ For ease of development and testing, we are going to use the auto configuration property "create"
+
+    ○ Database tables are dropped first and then created from scratch. This will cause all data to be lost, but this is
+    fine just for dev and testing.
+
+    ○ If we want to create tables once and keep data, make use of the update config
+
+    ○ However, we need to be aware it will alter the database schema based on latest code updates. We need to be careful
+    and only use it for database projects. 
+
+  ● Warning
+
+    ○ Don't use the config property "create" on Production databases. 
+
+    ○ We don't want to drop our production data.
+
+    ○ Instead for Production, we should have DBAs run SQL scripts, and stay hands-off as much as possible.
+
+  ● Use case
+
+    ○ The use case for the create configuration, is useful for
+
+      ■ Database integration testing with in-memory databases
+      ■ Basic, small hobby projects
+
+  ● Recommendation
+
+    ○ In general, the instructor does not recommend auto generation for enterprise, real-time projects
+
+      ■ Because we can very easily drop production data if we are not careful 
+
+    ○ Instead, he recommend using SQL scripts
+
+      ■ Corporate DBAs prefer SQL scripts for governance and code review.
+
+      ■ The SQL scripts can be customized and fine-tuned for complex database designs.
+
+      ■ We can also work with schema migration tools such as Liquibase and Flyway
+
+
+
+
+
+
+
