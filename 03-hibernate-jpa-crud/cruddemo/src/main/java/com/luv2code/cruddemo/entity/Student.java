@@ -3,13 +3,25 @@ package com.luv2code.cruddemo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "student")
+@Table(name="student")
 public class Student {
 
- 
+    // define fields
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;
+
+    @Column(name="first_name")
+    private String firstName;
+
+    @Column(name="last_name")
+    private String lastName;
+
+    @Column(name="email")
+    private String email;
 
     // define constructors
-
     public Student() {
 
     }
@@ -20,8 +32,7 @@ public class Student {
         this.email = email;
     }
 
-
-    // define getters
+    // define getters/setters
 
     public int getId() {
         return id;
@@ -38,8 +49,6 @@ public class Student {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
-    // define setters
 
     public String getLastName() {
         return lastName;
@@ -62,6 +71,11 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + '}';
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
