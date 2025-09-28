@@ -123,6 +123,141 @@
 
           . We will hear folks use these terms interchangeably, so at a very high level, they're generally= all the same
           thing. 
+
+
+  ● What is the difference between REST and RESTful applications? 
+
+    ○ REST  is an architectural style that define a set of principles for Distributed Systems
+
+      ■ Example of REST principles
+
+        □ Communication without states (stateless) 
+        □ Resource identification by URI.
+        □ Standardized HTTP operations (GET, POST, PUT, DELETE...)
+        □ Cache when possible
+
+        □ REST is the theory
+
+
+    ○ RESTful
+
+      ■ Adjective to tell if a system follows all the REST principles.
+      ■ An API can be called as REST, but only be "REST-like", meaning it won't follow everything.
+      ■ Example: 
+        □ An API which uses GET /getAllProducts instead of GET /products is not 100% RESTful, because it is mixing the URL
+        with a verb.
+        □ Other API that keeps the user session in the server (stateful) is also not completely RESTful.
+
+        □ Therefore, the restful is the practice of correctly keeping all the principles
+
+
+  ● What are Distributed systems? 
+    
+    ○ A distributed system is a collection of independent computers that appear to the users as a single coherent system.
+    These computers (often called nodes) communicate with each other over a network and coordinate their actions by passing
+    messages.
+
+    ○ The main characteristics of distributed systems are: 
+      ■ Resource sharing - Hardware, software, or data resources are shared across different nodes.
+      ■ Transparency - The system hides complexity so users interact with it as if it were a single system (e.g. location
+      transparency, replication transparency)
+      ■ Scalability - The system can grow by adding more machines without significant reconfiguration
+      ■ Fault tolerance - Even if one or more nodes fail, the system continues to operate, often by replicating data or
+      services
+      ■ Concurrency - Multiple processes can run simultaneously on different machines
+
+    ○ Examples include cloud platforms like AWS, Azure, peer-to-peer networks, distributed databases, and large-scale web
+    applications
+
+    ○ In short: It is a network of computers working together to achieve a common goal, giving the illusion of being a
+    single system.
+
+    ○ But what are it's connection with REST?
+
+      ■ While Distributed Systems is about how multiple computers work together, REST, on te other hand, is an architectural
+      style for communication between systems. It defines principles on how components in a distributed system (usually
+      client and server) should interact over a network, most often using HTTP. The connection is
+
+        □ A distributed system needs a way for its parent to talk to reach other -> REST provides a standardized way to
+        do this
+
+        □ REST uses stateless communication: each request from a client to a server contains all the necessary information,
+        which makes distributed systems simpler to scale and more fault;tolerant
+
+        □ In many modern distributed systems (like microservices, cloud platforms or APISs), RESTful APIs are the communication
+        layer that allows different services (running on different machines) to work together as a single system
+
+      ■ In short:
+
+        □ Distributed Systems = the big picture (many computer working as one).
+        □ REST = the communication style often used to make that possible.
+
+  ## Lesson 3 - JSON Basics
+
+    ● What is JSON?
+
+      ○ JavaScript Object Notation
+      ○ Lightweight data format for storing and exchanging data... plain text
+      ○ Language independent... not just for JavaScript, which means it can be used with any programming language: Java,
+      C#, Python, etc. This is possible because it is basically plain text
+
+    ● Simple JSON Example
+
+      ○ {
+        "id": 14,
+        "firstName": "Caio"
+        "lastName": "Ceretta"
+        "active": true
+      }
+
+        ■ The object members are name / value pairs
+          □ Delimited by columns
+          □ "Name" is always in double-quotes
+
+      ○ JSON Values
+
+        ■ Numbers no quotes
+        ■ String: Always in double quotes
+        ■ Boolean: true or false with no quotes
+        ■ Nested JSON object
+
+          □ {
+            ...
+              "address": {
+                "street": "100 Main St",
+                "city": "Philadelphia",
+                "state": "Pennsylvania",
+                "zip": "19103",
+                "country": "USA"
+              }
+            ...
+            }
+
+        ■ Array
+
+                    □ {
+            ...
+              "languages": ["Java", "Next.js", "Javascript", "Node.js"]
+            ...
+            }
+
+        ■ null
+
+  ## Lesson 4 - Spring Boot REST HTTP Basica
+
+    ● 
+
+        
+      
+
+
+
+
+       
+      
+
+
+ 
          
 
 
@@ -133,3 +268,4 @@
   
 
 
+ 
