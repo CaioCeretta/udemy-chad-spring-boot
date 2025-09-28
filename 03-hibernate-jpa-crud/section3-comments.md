@@ -1414,10 +1414,20 @@
     ○ We didn't have to run the script to create everything again once dropped, hibernate dealt with it for us.
 
     ○ With this attribute on the properties, if we keep running over and over again, the table will be dropped and created
-    again, and since our runner method invokes a function to add 3 new students, the output will remain the same.
+    every time, and since our runner method invokes a function to add 3 new students, the output will remain the same.
 
+    ○ In the logs, after deletion, we are going to see that it dropped if it existed and created a new one with
+    the columns defined in the class
+
+      ■ Also, we are able to see, by running the command to add the new objects, which parameters were bound and the used
+      on the insert command
+
+ 
   ● The `update` attribute value keeps the previous data
     ○ Meaning that the old data created on the previous run remains
+
+    ○ By running the app, we will see on the logs that no table was dropped and created again, and the 3 new students were
+    added to the table.
 
   
     
