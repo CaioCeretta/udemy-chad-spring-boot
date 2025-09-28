@@ -243,9 +243,87 @@
 
         ■ null
 
-  ## Lesson 4 - Spring Boot REST HTTP Basica
+  ## Lesson 4 - Spring Boot REST HTTP Basics
+    ● REST over HTTP
 
-    ● 
+      ○ Most common use of REST is over HTTP
+      ○ Leverage HTTP methods for CRUD operations
+
+        ■ HTTP Method: POST - CRUD Operation: Create a new entity
+        ■ HTTP Method: GET - Read a list of entities or single entity
+        ■ HTTP Method: PUT - Update an existing entity
+        ■ HTTP Method: DELETE - Delete an existing entity 
+
+    ● HTTP Messages
+
+      ○ Client (MyCRMApp) -> Server (CRM Rest Service)
+
+        ■ Client sends over REST requests for the Server, which send back an HTTP Response message
+
+      ○ HTTP Request Message
+
+        ■ Every request has a `Request line`, `Header variables`, `Message body`
+
+          □ Request line: The HTTP command (GET, POST, PUT...)
+          □ Header variables: Request metadata. Additional information about the request
+          □ Message body: Contents of message
+
+      ○ HTTP Response Message
+
+        ■ Response messages has a `Response Line`, `Header Variables` and `Message Body`
+
+          □ Response line: server protocol and status code, which may be any status code, such as 404, 200, 201, 301...
+          □ Header variables: response metadata
+          □ Message body: contents of message, so if we request a list of all customers, then that list of data will also
+          come back in the message body as either XML or JSON depending on the server configuration
+
+          □ HTTP Response - Status codes
+
+            . Anything in the 100 range that's all informational
+            . Anything in the 200 range it's all success messages
+            . Anything in the 300 range it's all direction message
+            . Anything in the 400 range it's all client error message, such as 401 Authentication Required and File Not
+            Found
+            . Anything in the 500 range it's all server error message, such as 500 Internal Server Error
+
+        ■ MIME Content Types
+
+          □ Actual message format for the payload, and it's described by a MIME content type, which means Multipurpose
+          Internet Mail-Extension, which we will normally hear folks refer to it as MIME , and it simply describes the actual
+          content or the format of the message being returned
+
+          □  Basic Syntax: type/sub-type, like text/html, text/plain. This is information that's returned back to the
+          client and then the client can render it correctly, or process it accordingly.
+
+            . Using a web browser for example, if we return back text/html to a web browser, a web browser will render
+            that based on HTML tags. We pass back text/plain, the web browser will simply just show the plain text in the
+            browser. 
+            . We can also make use of RESTful clients for that. In particular for REST clients we can pass back application/json
+            and basically tell the client "Hey, we're returning JSON data for you" or we can use application/xml saying
+             "Hey, we're returning XML data for you".
+
+      ○ Client Tool
+
+        ■ We need a client tool where we will send HTTP requests to the REST Web Service / API. Where we will send HTTP
+        requests to REST Web Services / API
+
+        ■ Plenty of tools available: curl, Postman, Insomnia, etc...
+
+  ## Lesson 5 - Spring Boot REST Controller - Overview - Part 1
+
+
+
+             
+
+
+
+             
+
+          
+ 
+      
+
+      
 
         
       
