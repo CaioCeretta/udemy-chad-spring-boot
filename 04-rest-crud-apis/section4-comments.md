@@ -311,37 +311,61 @@
 
   ## Lesson 5 - Spring Boot REST Controller - Overview - Part 1
 
+    ● Setup a Spring REST Hello World example.
 
+      ○ The REST client will make a request for a /test/hello which will respond with Hello World!
 
-             
+      ○ On the far right side (the service), we write the code for the rest service and on the left hand side, as the
+      REST client, we can make use of either the web browser or make use of Insomnia
 
+    ● Basic coding for a Spring REST controller.
 
+      ```java
 
-             
+        // This annotation adds the REST support.
+        @RestController
+        // the @RequestMapping("/test") at the class level means that every endpoint inside this controller will have this
+        // as a prefix.
+        @RequestMapping("/test")
+        public class DemoRestController {
+           
+          @GetMapping("/hello") // Defines the path where we can access this function
+          public String sayHello() {
+            // Back to the client
+            return "Ciao, Mondo!";
+          }
 
-          
- 
+        }
+
+      ```
+
+      ○ We can now test this with a REST client - Insomnia. However, since this is a GET request, we can simply access
+      it through a web browser and use the same url in the address bar
+
+  ## Lesson 6 - Spring REST Controller Development Process - Overview - Part 2
+
+    ○ 1. Add Maven dependency for Spring Boot Starter Web
       
+      ■ Within pom.xml, add the following
 
-      
+        □ <!-- Add Spring Boot Starter Web -->
 
-        
-      
+          <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+          </dependency>
 
-
-
-
-       
-      
-
-
- 
-         
-
-
-  
-
+        □ However, instead of writing this manually, inside the Spring Initializr website, when setting up the project,
+        simply select the Web dependency
     
+
+    ○ 2. Create Spring REST Service using @RestController annotation
+
+      ■ Just like the code we saw over earlier for building in our REST Service, we simply write our @RestController and
+      add the endpoint
+
+
+      
 
   
 
