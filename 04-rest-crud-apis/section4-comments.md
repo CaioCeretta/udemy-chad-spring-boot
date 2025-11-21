@@ -61,7 +61,7 @@
     ○ The API documentation gives us the following:
 
       ■ Pass in the latitude and longitude for your desired location:
-        □ api.openweatherapp.org/data/<apiVersion>/onecall?lat={theLatitude}&lon={theLongitude}
+        □ `api.openweatherapp.org/data/<apiVersion>/onecall?lat={theLatitude}&lon={theLongitude}`
         □ This will actually give us the weather report
 
         □ The response will be something like:
@@ -127,7 +127,7 @@
 
   ● What is the difference between REST and RESTful applications? 
 
-    ○ REST  is an architectural style that define a set of principles for Distributed Systems
+    ○ REST is an architectural style that define a set of principles for Distributed Systems
 
       ■ Example of REST principles
 
@@ -363,6 +363,23 @@
 
       ■ Just like the code we saw over earlier for building in our REST Service, we simply write our @RestController and
       add the endpoint
+
+## Lesson 7 - Spring Boot Rest Controller - Coding
+
+
+● Initial config
+  
+  • Basic settings -> maven / java / latest stable spring boot / jar 
+  • For the additional dependencies this project will only use spring web
+  • Generate it
+
+● Coding
+
+  ○ Start by adding a new package named rest under demo and define a new DemoRestController
+    . Annotate it with @RestController and @RequestMapping("/test") — RequestMapping will make all the requests inside
+    the class to be mapped after "test"
+
+
 
 
       
