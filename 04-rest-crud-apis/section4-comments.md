@@ -379,6 +379,145 @@
     . Annotate it with @RestController and @RequestMapping("/test") — RequestMapping will make all the requests inside
     the class to be mapped after "test"
 
+## Lesson 8 - Java JSON Data Binding
+
+### What is data binding? 
+
+Data binding is the process of converting JSON data to a Java POJO. We can use it to convert from JSON over to a Java POJO,
+or the other way around. (Java POJO is simply a simple java object or any old java class )
+
+This term is also known as mapping, serialization/deserialization, or marshalling / unmarshalling
+
+### JSON Data Binding with Jackson
+
+• Spring uses the Jackson Project behind the scenes
+
+• Jackson handles data binding between JSON and Java POJO
+
+• Spring Boot Started Web automatically includes dependency for jackson
+
+### Jackson Data Binding
+
+Jackson is a separate projected, that has a lot of synergy between Jackson and Spring, but Jackson is focused on doing the
+data bindings: Be it with with XML, JSON, and so on.
+
+It is a very popular project, and if we do any type of JSON or REST development in the Java World, it is a very good chance
+we run across a Jackson project.
+
+By default, it calls the appropriate getter / setter methods when it handles the conversions. 
+
+Assume we have the following object
+
+```JSON
+  {
+    "id": 14,
+    "firstName": "Mario",
+    "lastName": "Rossi",
+    "active": 14
+  }
+
+And on the other side we have the Java POJO for Student. Jackson will help us with this process.
+
+#### JSON to Java POJO
+
+In this scenario they will call the setter methods inside the POJO, and assume the POJO is
+```
+  public class Student {
+    private int id;
+    private String firstName;
+    private String lastName;
+    private boolean active;
+
+    // void setters for each attribute
+  }
+
+The important thing here is: Jackson will call the setter methods on the POJO, and for ID it will call setId, and so on.
+
+Note: Jackson calls the setXXX methods. It does NOT access internal private fields directly. Therefore, it is important
+to have the setter methods to find.
+
+#### Java POJO to JSON
+
+In this other scenario, Jackson will call the getter methods inside the POJO.
+
+Again, Jackson is going to call the appropriate getter methods on our POJO and will handle getting this data being sent to
+our JSON.
+
+### Spring and Jackson Support
+
+● When building Spring REST applications
+
+  • Spring will automatically handle the integration.
+  • Any JSON data being passed to REST controller is automatically converted to POJO
+  • And also, any Java Object that is being returned from a REST controller, is converted to JSON
+
+## Lesson 9 - Spring Boot REST POJO - Overview
+
+### Create a New Service
+
+● Returns a list of students
+
+  ○ GET method -> /api/students -> Returns a list of students
+  ○ Therefore, our REST client will send a request to our REST Service `/api/students`
+  ○ Return a list of students as JSON
+
+### Convert Java POJO to JSON
+
+  Our REST Service will return a List<Student>  and we need to convert that list returned by the service to a JSON.
+
+  Jackson will help us with this.
+
+  Java POJO being returned from REST controller is automatically converted to JSON — if a Java POJO is being returned from  the controller.
+
+### Student POJO class
+
+class with first and last names attributes, and their respective getters/setters
+
+### Spring Rest Service
+
+Rest calls the rest service via that url, rest service write the code and the service returns something as
+
+```JSON
+  {
+    "firstName": "Alex",
+    "lastName": "Ceretta"
+  },
+  {
+    "firstName": "André",
+    "lastName": "Ceretta"
+  },
+  {
+    "firstName": "Caio",
+    "lastName": "Ceretta"
+  },
+```
+
+This works because spring rest and jackson intercept that call in both ways.
+
+### Coding steps
+
+1 - Create Java Pojo class for student with getters and setters
+2 - Inside the @RestController Controller, define the endpoint and its method that will return the list of students and
+return it to the user.
+
+## Lesson 10/11 - Coding
+
+Create a new sibling package to "rest" named "entity", which will hold our POJO class, in this case, the Student.
+
+Create a new Student rest controller with all the required annotations, remember, a function in java is created with
+
+`modifier type functionName() { body } `
+ 
+Create some user samples for the example and return them.
+
+
+
+
+
+
+  
+
+
 
 
 
